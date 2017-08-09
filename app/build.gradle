@@ -1,0 +1,105 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+//for what?
+//apply from: '../config/quality/quality.gradle'
+
+android {
+    compileSdkVersion rootProject.ext.compiledSdk
+    buildToolsVersion rootProject.ext.buildToolVersion
+    defaultConfig {
+        applicationId "com.example.ahmed.walkgraph"
+        minSdkVersion rootProject.ext.minimumSdk
+        targetSdkVersion rootProject.ext.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "12g"
+    }
+
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Library definitions
+    def supportLib = rootProject.ext.supportDependencies
+    def rxDependencies = rootProject.ext.rxDependencies
+    def daggerDependencies = rootProject.ext.daggerDependencies
+    def butterKnifeDependencies = rootProject.ext.butterKnifeDependencies
+    def jUnit = rootProject.ext.junitDependency
+    def mockito = rootProject.ext.mockitoDependency
+    def roboLectric = rootProject.ext.roboLectricDependency
+    def roboShadow = rootProject.ext.roboLectricShadowsDependency
+    def espresso = rootProject.ext.espressoDependency
+    def espressoExclude = rootProject.ext.espressoExcludeGroups
+
+    //supportLib
+    compile supportLib.appCompat
+    compile supportLib.support
+    compile supportLib.design
+    compile supportLib.cardView
+    compile supportLib.recyclerView
+
+    //rxJava
+    compile rxDependencies.rxJava
+    compile rxDependencies.rxAndroid
+
+    //dagger
+    compile daggerDependencies.dagger
+    compile daggerDependencies.daggerApt
+
+    //butterKnife
+    compile butterKnifeDependencies.butterknife
+    compile butterKnifeDependencies.butterknifeApt
+
+    //tests
+    compile jUnit
+    compile mockito
+    compile roboLectric
+    compile roboShadow
+
+
+    androidTestCompile(espresso, {
+        exclude group: espressoExclude.group1, module: espressoExclude.module1
+        exclude group: espressoExclude.group2, module: espressoExclude.module2
+        exclude group: espressoExclude.group3, module: espressoExclude.module3
+        exclude group: espressoExclude.group4, module: espressoExclude.module4
+        exclude group: espressoExclude.group5, module: espressoExclude.module5
+    })
+
+    configurations.all {
+        resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+    }
+    compile 'javax.inject:javax.inject:1'
+    compile 'com.android.support:support-v4:26.+'
+    provided 'javax.annotation:jsr250-api:1.0'
+}

@@ -1,0 +1,66 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+//defining versions in one place to avoid version conflicts
+ext {
+    buildToolVersion = "26.0.0"
+    minimumSdk = 15
+    targetSdk = 26
+    compiledSdk = 26
+
+    // Library versions
+    supportLibraryVersion = '26.0.0-alpha1'
+    rxjava2Version = '2.1.2'
+    rxAndroidVersion = '2.0.1'
+    dagger2Version = '2.9'
+    butterKnifeVersion = '8.5.1'
+
+    //Test versions
+    jUnitVersion = "4.12"
+    mockitoVersion = "1.10.19"
+    espressoVersion = "2.2.2"
+    roboLectricVersion = "3.4-rc5"
+    roboLectricShadowsVersion = "3.0"
+
+    // Library dependencies
+    supportDependencies = [
+            appCompat       : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            support         : "com.android.support:support-v4:${supportLibraryVersion}",
+            design          : "com.android.support:design:${supportLibraryVersion}",
+            cardView        : "com.android.support:cardview-v7:${supportLibraryVersion}",
+            recyclerView    : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+    ]
+
+    rxDependencies = [
+            rxJava       : "io.reactivex.rxjava2:rxjava:${rxjava2Version}",
+            rxAndroid    : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+    ]
+
+    daggerDependencies = [
+            dagger   : "com.google.dagger:dagger:${dagger2Version}",
+            daggerApt: "com.google.dagger:dagger-compiler:${dagger2Version}",
+    ]
+
+    butterKnifeDependencies = [
+            butterknife   : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            butterknifeApt: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+    ]
+
+    // Test dependencies
+    junitDependency = "junit:junit:${jUnitVersion}"
+    mockitoDependency = "org.mockito:mockito-core:${mockitoVersion}"
+    roboLectricDependency = "org.robolectric:robolectric:${roboLectricVersion}"
+    roboLectricShadowsDependency = "org.robolectric:shadows-support-v4:${roboLectricShadowsVersion}"
+
+    espressoExcludeGroups = [
+            group1: "com.android.support", module1: "support-annotations",
+            group2: "com.android.support", module2: "support-v4",
+            group3: "com.android.support", module3: "appcompat-v7",
+            group4: "com.android.support", module4: "design",
+            group5: "com.android.support", module5: "recyclerview-v7",
+    ]
+    espressoDependency = "com.android.support.test.espresso:espresso-core:${espressoVersion}"
+
+}
