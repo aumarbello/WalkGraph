@@ -6,11 +6,14 @@ import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
 import com.example.ahmed.walkgraph.presentation.settings.SettingsFragmentImpl;
 import com.example.ahmed.walkgraph.presentation.splash.SplashFragmentImpl;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
  * Created by ahmed on 8/9/17.
  */
+@Singleton
 @Component(modules = {FragmentModules.class, PresenterModules.class, ApplicationModules.class})
 public interface AppComponent {
     void inject(SplashFragmentImpl fragment);

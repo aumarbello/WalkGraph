@@ -14,7 +14,7 @@ import com.example.ahmed.walkgraph.R;
  */
 
 public class GraphListImpl extends Fragment implements GraphList {
-    interface GraphListCallBack{
+    public interface GraphListCallBack{
 
     }
 

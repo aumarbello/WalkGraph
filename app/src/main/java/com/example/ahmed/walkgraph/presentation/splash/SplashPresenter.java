@@ -5,4 +5,5 @@ package com.example.ahmed.walkgraph.presentation.splash;
  */
 
 public interface SplashPresenter {
+    void openMapFragment();
 }
