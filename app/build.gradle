@@ -10,8 +10,6 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-//for what?
-//apply from: '../config/quality/quality.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compiledSdk
@@ -36,14 +34,25 @@ android {
         javaMaxHeapSize "12g"
     }
 
-
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
 
     packagingOptions {
-        exclude 'META-INF/rxjava.properties'
+        pickFirst 'licenses/*'
+        pickFirst 'META-INF/rxjava.properties'
+        pickFirst 'org/cyberneko/html/res/*'
+        pickFirst 'META-INF/plexus/*'
+        pickFirst 'org.codehaus/plexus/*'
+        pickFirst 'org/codehaus/plexus/*'
+        pickFirst 'META-INF/NOTICE'
+        pickFirst 'META-INF/LICENSE'
+        pickFirst 'META-INF/DEPENDENCIES'
+        pickFirst 'META-INF/notice.txt'
+        pickFirst 'META-INF/license.txt'
+        pickFirst 'META-INF/dependencies.txt'
+        pickFirst 'META-INF/LGPL2.1'
     }
 }
 
@@ -75,17 +84,17 @@ dependencies {
 
     //dagger
     compile daggerDependencies.dagger
-    compile daggerDependencies.daggerApt
+    annotationProcessor daggerDependencies.daggerApt
 
     //butterKnife
     compile butterKnifeDependencies.butterknife
-    compile butterKnifeDependencies.butterknifeApt
+    annotationProcessor butterKnifeDependencies.butterknifeApt
 
     //tests
-    compile jUnit
-    compile mockito
-    compile roboLectric
-    compile roboShadow
+    testCompile jUnit
+    testCompile mockito
+    testCompile roboLectric
+    testCompile roboShadow
 
 
     androidTestCompile(espresso, {
@@ -98,8 +107,8 @@ dependencies {
 
     configurations.all {
         resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+        resolutionStrategy.force "com.google.guava:guava:20.0-rc1"
     }
     compile 'javax.inject:javax.inject:1'
-    compile 'com.android.support:support-v4:26.+'
     provided 'javax.annotation:jsr250-api:1.0'
 }
