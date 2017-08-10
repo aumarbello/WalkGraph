@@ -1,13 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ahmed.walkgraph.presentation.splash.SplashFragmentImpl">
+    tools:context="com.example.ahmed.walkgraph.presentation.splash.SplashFragmentImpl"
+    android:background="@color/colorPrimary">
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/btn_dialog"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/walk_graph_logo"/>
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/splash_bottom_text"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/medium_text_spacing"
+        android:textColor="@android:color/black"/>
+</RelativeLayout>

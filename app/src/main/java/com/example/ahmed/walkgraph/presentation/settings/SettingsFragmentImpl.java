@@ -14,7 +14,7 @@ import com.example.ahmed.walkgraph.R;
  */
 
 public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
-    interface SettingsCallBack{
+    public interface SettingsCallBack{
 
     }
 

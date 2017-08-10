@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="small_text_spacing">5dp</dimen>
+    <dimen name="medium_text_spacing">10dp</dimen>
+    <dimen name="large_text_spacing">15dp</dimen>
+</resources>

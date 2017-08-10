@@ -14,7 +14,7 @@ import com.example.ahmed.walkgraph.R;
  */
 
 public class MapFragmentImpl extends Fragment implements MapFragment {
-    interface MapCallBack{
+    public interface MapCallBack{
 
     }
 
