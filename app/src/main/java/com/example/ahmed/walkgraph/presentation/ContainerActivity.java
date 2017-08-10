@@ -16,7 +16,7 @@ public class ContainerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //testing database creation
         GraphDAO graphDAO = GraphDAO.getDao(this);
     }
 }
