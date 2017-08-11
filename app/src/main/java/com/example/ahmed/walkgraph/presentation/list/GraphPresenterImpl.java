@@ -5,4 +5,5 @@ package com.example.ahmed.walkgraph.presentation.list;
  */
 
 public class GraphPresenterImpl implements GraphPresenter {
+    // TODO: 8/10/17 perform call to db in different thread, consider using observable
 }

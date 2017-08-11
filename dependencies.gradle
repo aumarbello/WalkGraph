@@ -23,6 +23,7 @@ ext {
     espressoVersion = "2.2.2"
     roboLectricVersion = "3.4-rc5"
     roboLectricShadowsVersion = "3.0"
+    googleMapsVersion = "11.0.2"
 
     // Library dependencies
     supportDependencies = [
@@ -46,6 +47,11 @@ ext {
     butterKnifeDependencies = [
             butterknife   : "com.jakewharton:butterknife:${butterKnifeVersion}",
             butterknifeApt: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+    ]
+
+    playServices = [
+            maps : "com.google.android.gms:play-services-maps:${googleMapsVersion}",
+            location : "com.google.android.gms:play-services-location:${googleMapsVersion}"
     ]
 
     // Test dependencies

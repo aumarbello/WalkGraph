@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 
 /**
@@ -23,6 +24,7 @@ public class GraphListImpl extends Fragment implements GraphList {
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
+        ((App)getActivity().getApplication()).getComponent().inject(this);
     }
 
     @Override

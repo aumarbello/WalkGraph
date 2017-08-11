@@ -70,6 +70,7 @@ dependencies {
     def roboShadow = rootProject.ext.roboLectricShadowsDependency
     def espresso = rootProject.ext.espressoDependency
     def espressoExclude = rootProject.ext.espressoExcludeGroups
+    def googlePlayServices = rootProject.ext.playServices
 
     //supportLib
     compile supportLib.appCompat
@@ -89,6 +90,10 @@ dependencies {
     //butterKnife
     compile butterKnifeDependencies.butterknife
     annotationProcessor butterKnifeDependencies.butterknifeApt
+
+    //google play services
+    compile googlePlayServices.maps
+    compile googlePlayServices.location
 
     //tests
     testCompile jUnit
