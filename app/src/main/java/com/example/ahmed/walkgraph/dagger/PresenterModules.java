@@ -25,25 +25,26 @@ import dagger.Provides;
 public class PresenterModules {
     @Provides
     @Singleton
-    public SplashPresenterImpl providesSplashPresenter(SplashFragmentImpl splashFragment){
+    SplashPresenterImpl providesSplashPresenter(SplashFragmentImpl splashFragment){
         return new SplashPresenterImpl(splashFragment);
     }
 
     @Provides
     @Singleton
-    public MapPresenterImpl providesMapPresenter(MapFragmentImpl mapFragment){
-        return new MapPresenterImpl();
+    MapPresenterImpl providesMapPresenter(MapFragmentImpl mapFragment, GraphDAO graphDAO){
+        return new MapPresenterImpl(graphDAO, mapFragment);
     }
 
     @Provides
     @Singleton
-    public GraphPresenterImpl providesGraphPresenter(GraphListImpl graphList, GraphDAO graphDAO){
-        return new GraphPresenterImpl();
+    GraphPresenterImpl providesGraphPresenter(GraphListImpl graphList, GraphDAO graphDAO){
+        return new GraphPresenterImpl(graphList, graphDAO);
     }
 
     @Provides
     @Singleton
-    public SettingsPresenterImpl providesSettingsPresenter(Preferences preferences, SettingsFragmentImpl fragment){
+
+    SettingsPresenterImpl providesSettingsPresenter(Preferences preferences, SettingsFragmentImpl fragment){
         return new SettingsPresenterImpl();
     }
 }

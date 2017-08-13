@@ -3,6 +3,7 @@ package com.example.ahmed.walkgraph.dagger;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.ahmed.walkgraph.data.local.GraphDAO;
 import com.example.ahmed.walkgraph.data.prefs.Preferences;
 
 import javax.inject.Singleton;
@@ -23,13 +24,19 @@ public class ApplicationModules {
 
     @Provides
     @Singleton
-    public Context providesContext(){
+    Context providesContext(){
         return application;
     }
 
     @Provides
     @Singleton
-    public Preferences providePreference(Context context){
+    Preferences providePreference(Context context){
         return new Preferences(context);
+    }
+
+    @Provides
+    @Singleton
+    GraphDAO providesGraphDao(Context context){
+        return GraphDAO.getDao(context);
     }
 }

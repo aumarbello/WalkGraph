@@ -6,7 +6,7 @@ allprojects {
 //defining versions in one place to avoid version conflicts
 ext {
     buildToolVersion = "26.0.0"
-    minimumSdk = 15
+    minimumSdk = 21
     targetSdk = 26
     compiledSdk = 26
 
