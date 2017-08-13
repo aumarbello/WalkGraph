@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
-import com.example.ahmed.walkgraph.data.local.GraphDAO;
 import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
 import com.example.ahmed.walkgraph.presentation.settings.SettingsFragmentImpl;
@@ -46,8 +45,6 @@ public class ContainerActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((App)getApplication()).getComponent().inject(this);
-        //testing database creation
-        GraphDAO graphDAO = GraphDAO.getDao(this);
 
         manager = getSupportFragmentManager();
         manager.beginTransaction()
@@ -66,5 +63,20 @@ public class ContainerActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed(){
 
+    }
+
+    // settings fragment callback
+    @Override
+    public void switchToList() {
+       manager.beginTransaction()
+               .replace(R.id.fragment_container, graphList)
+               .commit();
+    }
+
+    @Override
+    public void switchToMap() {
+        manager.beginTransaction()
+                .replace(R.id.fragment_container, mapFragment)
+                .commit();
     }
 }
