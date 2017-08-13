@@ -18,50 +18,83 @@ public class Preferences {
     private static final String LOCATION_FREQ = "FrequencyOfLocation";
     private static final String GRAPH_KEEP_TIME = "GraphKeepTime";
     private static final String ANIMATE_GRAPH = "AnimateGraph";
+    private static final String START_POLLING = "StartPollingLocation";
+    private static final String STOP_POLLING = "StopPollingLocation";
+    private static final String POLLING_INTERVAL = "PollingInterval";
 
     @Inject
     public Preferences(Context context){
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-
-    public static void setNotificationTime(long notificationTime){
+    // TODO: 8/13/17 return more reasonable default values
+    public void setNotificationTime(long notificationTime){
         preferences.edit()
                 .putLong(NOTIFICATION_TIME, notificationTime)
                 .apply();
     }
 
-    public static void setLocationFreq(int freq){
+    public void setLocationFreq(int freq){
         preferences.edit()
                 .putInt(LOCATION_FREQ, freq)
                 .apply();
     }
 
-    public static void setGraphKeepTime(int numberOfDays){
+    public void setGraphKeepTime(int numberOfDays){
         preferences.edit()
                 .putInt(GRAPH_KEEP_TIME, numberOfDays)
                 .apply();
     }
 
-    public static void setAnimateGraph(boolean flipAnimation){
+    public void setAnimateGraph(boolean flipAnimation){
         preferences.edit()
                 .putBoolean(ANIMATE_GRAPH, flipAnimation)
                 .apply();
     }
 
-    public static long getNotificationTime() {
+    public void setStartPolling(long startPolling){
+        preferences.edit()
+                .putLong(START_POLLING, startPolling)
+                .apply();
+    }
+
+    public void setStopPolling(long stopPolling){
+        preferences.edit()
+                .putLong(STOP_POLLING, stopPolling)
+                .apply();
+    }
+
+    public void setPollingInterval(int interval){
+        preferences.edit()
+                .putInt(POLLING_INTERVAL, interval)
+                .apply();
+    }
+
+    public int getPollingInterval(){
+        return preferences.getInt(POLLING_INTERVAL, 0);
+    }
+
+    public long getNotificationTime() {
         return preferences.getLong(NOTIFICATION_TIME, 0);
     }
 
-    public static int getLocationFreq() {
+    public int getLocationFreq() {
         return preferences.getInt(LOCATION_FREQ, 0);
     }
 
-    public static int getGraphKeepTime() {
+    public int getGraphKeepTime() {
         return preferences.getInt(GRAPH_KEEP_TIME, 0);
     }
 
-    public static boolean getAnimateGraph() {
+    public boolean getAnimateGraph() {
         return preferences.getBoolean(ANIMATE_GRAPH, false);
+    }
+
+    public long getStartPolling(){
+        return preferences.getLong(START_POLLING, 0);
+    }
+
+    public long getStopPolling(){
+        return preferences.getLong(STOP_POLLING, 0);
     }
 }

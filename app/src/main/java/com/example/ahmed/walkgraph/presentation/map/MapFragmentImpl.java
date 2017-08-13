@@ -16,6 +16,7 @@ import android.util.Log;
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 import com.example.ahmed.walkgraph.data.model.Graph;
+import com.example.ahmed.walkgraph.data.prefs.Preferences;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -38,6 +39,8 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     }
     @Inject
     MapPresenterImpl mapPresenter;
+    @Inject
+    Preferences preferences;
 
     private MapCallBack callBack;
     private GoogleApiClient client;
@@ -66,20 +69,20 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
                 })
                 .build();
         getMapAsync(theMap -> googleMap = theMap);
-//        JobScheduler scheduler = (JobScheduler) getActivity().
-//                getSystemService(Context.JOB_SCHEDULER_SERVICE);
-//        JobInfo info = new JobInfo.Builder(locationJobInfoId,
-//                new ComponentName(getActivity().getPackageName(),
-//                        LocationScheduler.class.getName()))
-//                .setPeriodic(JobInfo.getMinPeriodMillis())
-////                .setOverrideDeadline(4000)
-//                //use for testing
-//                .build();
-//        int status = scheduler.schedule(info);
-//        if (status == JobScheduler.RESULT_SUCCESS){
-//            Log.d(TAG, "Job scheduled successfully " + status);
-//        }else
-//            Log.d(TAG, "Job not scheduled" + status);
+        JobScheduler scheduler = (JobScheduler) getActivity().
+                getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobInfo info = new JobInfo.Builder(locationJobInfoId,
+                new ComponentName(getActivity().getPackageName(),
+                        LocationScheduler.class.getName()))
+                .setPeriodic(preferences.getNotificationTime())
+//                .setOverrideDeadline(4000)
+                //use for testing
+                .build();
+        int status = scheduler.schedule(info);
+        if (status == JobScheduler.RESULT_SUCCESS){
+            Log.d(TAG, "Job scheduled successfully " + status);
+        }else
+            Log.d(TAG, "Job not scheduled" + status);
         updateMapArea();
     }
 
@@ -110,6 +113,8 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
         // TODO: 8/11/17 presenter calls this methods at intervals to get location
         LocationRequest request = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                //calculate interval using start and stop
+//                preferences.getLocationFreq()
                 .setInterval(3000)
                 .setNumUpdates(5);
         if (ContextCompat.checkSelfPermission(getActivity(),
