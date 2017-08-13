@@ -11,4 +11,5 @@ import java.util.List;
 public interface GraphList {
     void setGraphList(List<Graph> allGraphs);
     void update();
+    void setUpBottomNav();
 }

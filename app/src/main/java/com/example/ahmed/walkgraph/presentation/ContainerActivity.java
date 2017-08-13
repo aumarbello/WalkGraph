@@ -79,4 +79,12 @@ public class ContainerActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, mapFragment)
                 .commit();
     }
+
+    //graphList fragment's specific callback
+    @Override
+    public void switchToSettings() {
+        manager.beginTransaction()
+                .replace(R.id.fragment_container, settingsFragment)
+                .commit();
+    }
 }
