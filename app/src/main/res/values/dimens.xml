@@ -8,4 +8,9 @@
 
     <!--Map dimensions-->
     <dimen name="map_inset">100dp</dimen>
+
+    <!--General Spacing-->
+    <dimen name="large_margin">30dp</dimen>
+    <dimen name="medium_margin">20dp</dimen>
+    <dimen name="small_margin">10dp</dimen>
 </resources>
