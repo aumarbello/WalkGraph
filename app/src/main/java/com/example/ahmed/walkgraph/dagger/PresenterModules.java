@@ -6,7 +6,6 @@ import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.list.GraphPresenterImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapPresenterImpl;
-import com.example.ahmed.walkgraph.presentation.settings.SettingsFragmentImpl;
 import com.example.ahmed.walkgraph.presentation.settings.SettingsPresenterImpl;
 
 
@@ -22,7 +21,7 @@ import dagger.Provides;
  * Created by ahmed on 8/9/17.
  */
 @Module
-public class PresenterModules {
+class PresenterModules {
     @Provides
     @Singleton
     SplashPresenterImpl providesSplashPresenter(SplashFragmentImpl splashFragment){
@@ -44,7 +43,7 @@ public class PresenterModules {
     @Provides
     @Singleton
 
-    SettingsPresenterImpl providesSettingsPresenter(Preferences preferences, SettingsFragmentImpl fragment){
-        return new SettingsPresenterImpl();
+    SettingsPresenterImpl providesSettingsPresenter(Preferences preferences){
+        return new SettingsPresenterImpl(preferences);
     }
 }
