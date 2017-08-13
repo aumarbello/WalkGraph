@@ -2,6 +2,7 @@ package com.example.ahmed.walkgraph.presentation.list;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +31,8 @@ import butterknife.Unbinder;
 
 public class GraphListImpl extends Fragment implements GraphList {
     public interface GraphListCallBack{
-
+        void switchToMap();
+        void switchToSettings();
     }
 
     private GraphListCallBack callBack;
@@ -41,6 +43,9 @@ public class GraphListImpl extends Fragment implements GraphList {
 
     @BindView(R.id.empty_list)
     RelativeLayout emptyList;
+
+    @BindView(R.id.list_bottom_nav)
+    BottomNavigationView navigationView;
 
     private List<Graph> graphList;
     private GraphAdapter adapter;
@@ -65,6 +70,7 @@ public class GraphListImpl extends Fragment implements GraphList {
             emptyList.setVisibility(View.VISIBLE);
         }
         graphListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        setUpBottomNav();
         return view;
     }
 
@@ -99,6 +105,21 @@ public class GraphListImpl extends Fragment implements GraphList {
             adapter.setGraphList(graphList);
             graphListView.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void setUpBottomNav() {
+        navigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.map:
+                    callBack.switchToMap();
+                    break;
+                case R.id.settings:
+                    callBack.switchToSettings();
+                    break;
+            }
+            return false;
+        });
     }
 
     class GraphHolder extends RecyclerView.ViewHolder{
