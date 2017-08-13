@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Text dimensions-->
     <dimen name="small_text_spacing">5dp</dimen>
     <dimen name="medium_text_spacing">10dp</dimen>
     <dimen name="large_text_spacing">15dp</dimen>
+    <dimen name="medium_text_size">18sp</dimen>
+
+    <!--Map dimensions-->
+    <dimen name="map_inset">100dp</dimen>
 </resources>

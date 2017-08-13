@@ -17,25 +17,25 @@ import dagger.Provides;
 public class FragmentModules {
     @Provides
     @Singleton
-    public SplashFragmentImpl providesSplashFragment(){
+    SplashFragmentImpl providesSplashFragment(){
         return new SplashFragmentImpl();
     }
 
     @Provides
     @Singleton
-    public MapFragmentImpl providesMapFragment(){
+    MapFragmentImpl providesMapFragment(){
         return new MapFragmentImpl();
     }
 
     @Provides
     @Singleton
-    public GraphListImpl providesGraphList(){
+    GraphListImpl providesGraphList(){
         return new GraphListImpl();
     }
 
     @Provides
     @Singleton
-    public SettingsFragmentImpl providesSettingsFragment(){
+    SettingsFragmentImpl providesSettingsFragment(){
         return new SettingsFragmentImpl();
     }
 }

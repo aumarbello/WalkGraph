@@ -5,4 +5,6 @@ package com.example.ahmed.walkgraph.presentation.map;
  */
 
 public interface MapFragment {
+    void loadCurrentLocation();
+    void updateMapArea();
 }
