@@ -5,7 +5,9 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 import com.example.ahmed.walkgraph.data.model.Graph;
 import com.example.ahmed.walkgraph.data.prefs.Preferences;
+import com.example.ahmed.walkgraph.notifications.LocationService;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -26,6 +29,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -68,14 +77,17 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
                     }
                 })
                 .build();
-        getMapAsync(theMap -> googleMap = theMap);
+        getMapAsync(theMap -> {
+            googleMap = theMap;
+            updateMapArea();
+        });
         JobScheduler scheduler = (JobScheduler) getActivity().
                 getSystemService(Context.JOB_SCHEDULER_SERVICE);
         JobInfo info = new JobInfo.Builder(locationJobInfoId,
                 new ComponentName(getActivity().getPackageName(),
                         LocationScheduler.class.getName()))
-                .setPeriodic(preferences.getNotificationTime())
-//                .setOverrideDeadline(4000)
+//                .setPeriodic(preferences.getNotificationTime())
+                .setOverrideDeadline(4000)
                 //use for testing
                 .build();
         int status = scheduler.schedule(info);
@@ -83,7 +95,6 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
             Log.d(TAG, "Job scheduled successfully " + status);
         }else
             Log.d(TAG, "Job not scheduled" + status);
-        updateMapArea();
     }
 
     @Override
@@ -105,7 +116,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     @Override
     public void onStop(){
         super.onStop();
-        client.disconnect();
+//        client.disconnect();
     }
 
     @Override
@@ -116,7 +127,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
                 //calculate interval using start and stop
 //                preferences.getLocationFreq()
                 .setInterval(3000)
-                .setNumUpdates(5);
+                .setNumUpdates(6);
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -127,16 +138,18 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
                             //read up on method reference
                             mapPresenter::savedLocation);
             //call presenter method with location parameter
-            Log.d(TAG, "Passed location to updateMapArea");
+            Log.d(TAG, "Passed location to Presenter");
+
+            getActivity().startService(new Intent(getActivity(),
+                    LocationService.class));
         }
     }
 
     @Override
     public void updateMapArea() {
         Graph graph = mapPresenter.getRecentGraph();
-        // TODO: 8/12/17 updateMapShould receive a graph as a parameter
-        // todo and zoom map according to the first and last locations
         if (googleMap == null){{
+            Log.d(TAG, "Google map is null");
             return;
         }}
         Location first = graph.getLocations().get(0);
@@ -152,6 +165,20 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
         int margin = getResources().getDimensionPixelSize(R.dimen.map_inset);
         CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, margin);
         googleMap.animateCamera(update);
+        drawGraph(graph);
+    }
+
+    @Override
+    public void drawGraph(Graph graph) {
+        PolylineOptions graphOptions = new PolylineOptions();
+        List<Location> locationList = graph.getLocations();
+
+        for (Location location: locationList){
+            graphOptions.add(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
+
+        Polyline graphPolygon = googleMap.addPolyline(graphOptions);
+        graphPolygon.setColor(Color.BLACK);
     }
 
     @Override
@@ -162,6 +189,8 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
                 if (grantedResults.length > 0 && grantedResults[0] ==
                         PackageManager.PERMISSION_GRANTED){
                     loadCurrentLocation();
+                    getActivity().startService(new Intent(getActivity(),
+                            LocationService.class));
                 }
                 else
                     Log.d(TAG, "Access Denied");

@@ -13,7 +13,8 @@ public class LocationScheduler extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "OnStartJob called");
-        //use location scheduler for notification
+        //inject dependecies
+        //inject(this)
         return false;
     }
 

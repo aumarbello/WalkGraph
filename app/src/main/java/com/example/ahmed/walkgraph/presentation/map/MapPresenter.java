@@ -13,4 +13,5 @@ public interface MapPresenter {
     void savedLocation(Location location);
     Graph getRecentGraph();
     void writeGraph();
+    Graph testGraph();
 }

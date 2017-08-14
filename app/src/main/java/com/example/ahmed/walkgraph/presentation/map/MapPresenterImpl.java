@@ -42,7 +42,7 @@ public class MapPresenterImpl implements MapPresenter {
             writeGraph();
         }else{
             locations.add(location);
-            Log.d(TAG, "Location received" + locations.size());
+            Log.d(TAG, "Location received" + locations.size() + location);
         }
 
         //before adding check to see if .size == numOfUpdates
@@ -54,25 +54,15 @@ public class MapPresenterImpl implements MapPresenter {
     @Override
     public Graph getRecentGraph() {
         //return stub graph to allow code to compile when there's no graph in db
-        Graph graph = new Graph();
-        graph.setGraphDate(new Date());
-
-        List<Location> locations = new ArrayList<>();
-
-        Location first = new Location(AppConstants.locationProvider);
-        first.setLatitude(0);
-        first.setLongitude(0);
-
-        Location second = new Location(AppConstants.locationProvider);
-        second.setLatitude(0);
-        second.setLongitude(0);
-
-        locations.add(first);
-        locations.add(second);
-
-        graph.setLocations(locations);
-        return graph;
-//        return graphDAO.getGraph(new Date().getTime());
+        Graph dbGraph = graphDAO.getGraph(new Date().getTime());
+        List<Graph> graphList = graphDAO.getAllGraphs();
+        if (dbGraph == null){
+            Log.d(TAG, "Error loading from db");
+            dbGraph = testGraph();
+            Log.d(TAG, "Graph loading from db " + dbGraph.getLocations().size()
+                    + " all graphs " + graphList.size());
+        }
+        return dbGraph;
     }
 
     @Override
@@ -86,4 +76,55 @@ public class MapPresenterImpl implements MapPresenter {
     }
     // TODO: 8/10/17 perform call to db in different thread, consider using observable
     // TODO: 8/12/17 get graph of previous date and pass to view
+
+    @Override
+    public Graph testGraph() {
+        Graph graph = new Graph();
+
+        List<Location> locationList = new ArrayList<>();
+        Location location = new Location(AppConstants.locationProvider);
+
+        location.setLatitude(6.5229296);
+        location.setLongitude(3.3792057);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5480747);
+        location.setLongitude(3.3975005);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5243793);
+        location.setLongitude(3.3975005);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5229296);
+        location.setLongitude(3.3792057);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5229296);
+        location.setLongitude(3.3792057);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5229296);
+        location.setLongitude(3.3792057);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5229296);
+        location.setLongitude(3.3792057);
+        locationList.add(location);
+
+        location = new Location(AppConstants.locationProvider);
+        location.setLatitude(6.5020794);
+        location.setLongitude(3.3737125);
+        locationList.add(location);
+
+        graph.setGraphDate(new Date());
+        graph.setLocations(locationList);
+        return graph;
+    }
 }
