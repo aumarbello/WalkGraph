@@ -10,8 +10,8 @@ import static com.example.ahmed.walkgraph.utils.AppConstants.*;
  * Created by ahmed on 8/10/17.
  */
 
-public class DatabaseHelper extends SQLiteOpenHelper {
-    public DatabaseHelper(Context context) {
+class DatabaseHelper extends SQLiteOpenHelper {
+    DatabaseHelper(Context context) {
         super(context, dataBaseName, null, dbVersion);
     }
 

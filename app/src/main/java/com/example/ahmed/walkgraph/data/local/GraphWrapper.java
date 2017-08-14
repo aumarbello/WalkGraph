@@ -11,15 +11,15 @@ import java.util.Date;
 /**
  * Created by ahmed on 8/10/17.
  */
-
-public class GraphWrapper extends CursorWrapper {
-    public GraphWrapper(Cursor cursor) {
+class GraphWrapper extends CursorWrapper {
+    GraphWrapper(Cursor cursor) {
         super(cursor);
     }
 
-    public Graph getGraph(){
-        long date = getLong(getColumnIndex(AppConstants.graphDate));
-        Date graphDate = new Date(date);
+    Graph getGraph(){
+//        String dateString = getString(getColumnIndex(AppConstants.graphDate));
+//        long dateLong = Long.parseLong(dateString);
+        Date graphDate = new Date();
         Graph graph = new Graph();
         graph.setGraphDate(graphDate);
         return graph;
