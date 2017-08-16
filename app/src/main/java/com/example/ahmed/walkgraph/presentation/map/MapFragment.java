@@ -7,7 +7,7 @@ import com.example.ahmed.walkgraph.data.model.Graph;
  */
 
 public interface MapFragment {
-    void loadCurrentLocation();
+    void startService();
     void updateMapArea();
     void drawGraph(Graph graph);
 }

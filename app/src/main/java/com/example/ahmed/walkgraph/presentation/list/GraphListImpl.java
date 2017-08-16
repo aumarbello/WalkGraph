@@ -57,7 +57,6 @@ public class GraphListImpl extends Fragment implements GraphList {
         super.onCreate(savedInstance);
         ((App)getActivity().getApplication()).getComponent().inject(this);
         graphList = new ArrayList<>();
-        graphPresenter.getGraphList();
     }
 
     @Override
@@ -66,10 +65,13 @@ public class GraphListImpl extends Fragment implements GraphList {
         View view = inflater.inflate(R.layout.graph_list, parent, false);
         unbinder = ButterKnife.bind(this, view);
 
+        graphPresenter.getGraphList();
+
         if (graphList.isEmpty()){
             emptyList.setVisibility(View.VISIBLE);
         }
         graphListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        update();
         setUpBottomNav();
         return view;
     }
@@ -104,6 +106,10 @@ public class GraphListImpl extends Fragment implements GraphList {
         } else {
             adapter.setGraphList(graphList);
             graphListView.setAdapter(adapter);
+        }
+
+        if (!graphList.isEmpty()){
+            emptyList.setVisibility(View.GONE);
         }
     }
 
