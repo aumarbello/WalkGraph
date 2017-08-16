@@ -14,6 +14,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
@@ -44,7 +47,7 @@ import javax.inject.Inject;
 
 public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     public interface MapCallBack{
-
+        void returnToList();
     }
     @Inject
     MapPresenterImpl mapPresenter;
@@ -52,49 +55,20 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     Preferences preferences;
 
     private MapCallBack callBack;
-    private GoogleApiClient client;
     private GoogleMap googleMap;
     private static final String TAG = "MapFragment";
     private static final int permissionCode = 1;
-    private static final int locationJobInfoId = 100;
 
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         ((App)getActivity().getApplication()).getComponent().inject(this);
-        client = new GoogleApiClient.Builder(getActivity())
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
-                        //call presenter method to telling it has connected and can call loadCurrentLocation()
-                        loadCurrentLocation();
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int i) {
-
-                    }
-                })
-                .build();
         getMapAsync(theMap -> {
             googleMap = theMap;
             updateMapArea();
         });
-        JobScheduler scheduler = (JobScheduler) getActivity().
-                getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        JobInfo info = new JobInfo.Builder(locationJobInfoId,
-                new ComponentName(getActivity().getPackageName(),
-                        LocationScheduler.class.getName()))
-//                .setPeriodic(preferences.getNotificationTime())
-                .setOverrideDeadline(4000)
-                //use for testing
-                .build();
-        int status = scheduler.schedule(info);
-        if (status == JobScheduler.RESULT_SUCCESS){
-            Log.d(TAG, "Job scheduled successfully " + status);
-        }else
-            Log.d(TAG, "Job not scheduled" + status);
+        startService();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -108,38 +82,28 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     }
 
     @Override
-    public void onStart(){
-        super.onStart();
-        client.connect();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.map_fragment, menu);
     }
 
     @Override
-    public void onStop(){
-        super.onStop();
-//        client.disconnect();
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == R.id.return_to_list){
+            callBack.returnToList();
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void loadCurrentLocation() {
-        // TODO: 8/11/17 presenter calls this methods at intervals to get location
-        LocationRequest request = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                //calculate interval using start and stop
-//                preferences.getLocationFreq()
-                .setInterval(3000)
-                .setNumUpdates(6);
+    public void startService() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     permissionCode);
         }else {
-            LocationServices.FusedLocationApi
-                    .requestLocationUpdates(client, request,
-                            //read up on method reference
-                            mapPresenter::savedLocation);
-            //call presenter method with location parameter
-            Log.d(TAG, "Passed location to Presenter");
-
             getActivity().startService(new Intent(getActivity(),
                     LocationService.class));
         }
@@ -188,7 +152,6 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
             case permissionCode:
                 if (grantedResults.length > 0 && grantedResults[0] ==
                         PackageManager.PERMISSION_GRANTED){
-                    loadCurrentLocation();
                     getActivity().startService(new Intent(getActivity(),
                             LocationService.class));
                 }

@@ -18,4 +18,5 @@
     <string name="polling_interval">Set Polling Interval</string>
     <string name="current_notification_time">Current Notification Time</string>
     <string name="current_polling_interval">Current Polling interval</string>
+    <string name="return_to_list">Return To List</string>
 </resources>

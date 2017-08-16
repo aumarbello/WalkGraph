@@ -30,7 +30,7 @@ public class MapPresenterImpl implements MapPresenter {
     //trigger loading new location
     @Override
     public void loadCurrentLocation() {
-        mapFragment.loadCurrentLocation();
+        mapFragment.startService();
     }
 
     //add location received to list of locations
