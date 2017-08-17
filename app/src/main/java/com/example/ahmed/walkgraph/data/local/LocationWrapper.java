@@ -23,4 +23,8 @@ class LocationWrapper extends CursorWrapper {
         location.setLongitude(longitude);
         return location;
     }
+
+    String LocationDate(){
+        return getString(getColumnIndex(AppConstants.location_date));
+    }
 }

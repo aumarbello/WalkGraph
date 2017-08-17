@@ -11,8 +11,16 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.ahmed.walkgraph.App;
+import com.example.ahmed.walkgraph.data.local.GraphDAO;
+import com.example.ahmed.walkgraph.data.model.Graph;
+import com.example.ahmed.walkgraph.data.prefs.Preferences;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by ahmed on 8/14/17.
@@ -20,10 +28,16 @@ import java.util.List;
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private LocationManager manager;
-    private static final int locationInterval = 1000;
     private static final int locationDistance = 0;
+    private static long locationInterval;
     private static Location theLocation;
     private static List<Location> locationList = new ArrayList<>();
+
+    @Inject
+    GraphDAO graphDAO;
+
+    @Inject
+    Preferences preferences;
 
     @Nullable
     @Override
@@ -33,29 +47,35 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
+        ((App)getApplicationContext()).getComponent().inject(this);
         Log.d(TAG, "Entered onCreate");
         initializeManager();
+
+        locationInterval = preferences.getPollingInterval() * 1000;
 
         try {
             manager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
-                    locationInterval, locationDistance,
+                    locationInterval,
+                    locationDistance,
                     locationListeners[1]
             );
         } catch (SecurityException sec) {
-            Log.d(TAG, "Security exception while saving theLocation", sec);
+            Log.d(TAG, "Permission possibly denied", sec);
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "IllegalArgumentException" + ex.getMessage(), ex);
         }
 
         try {
             manager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, locationInterval, locationDistance,
+                    LocationManager.GPS_PROVIDER,
+                    locationInterval,
+                    locationDistance,
                     locationListeners[0]);
         } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
+            Log.i(TAG, "Permission possibly denied", ex);
         } catch (IllegalArgumentException ex) {
-            Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+            Log.d(TAG, "IllegalArgumentException" + ex.getMessage());
 
         }
     }
@@ -97,9 +117,24 @@ public class LocationService extends Service {
         public void onLocationChanged(Location location) {
             LocationService.theLocation = location;
             Log.d(TAG, "Got a fix" + location);
-//            locationList.add(theLocation);
+            locationList.add(theLocation);
 
             //check if list size is equals to and write to db
+            if (locationList.size() == preferences.getLocationFreq()){
+                Graph graph = new Graph();
+
+                int day , month, year;
+
+                Calendar calendar = Calendar.getInstance();
+
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                month = calendar.get(Calendar.MONTH);
+                year = calendar.get(Calendar.YEAR);
+
+                graph.setGraphDate(day, month, year);
+                graph.setLocations(locationList);
+                graphDAO.addGraph(graph);
+            }
         }
 
         @Override

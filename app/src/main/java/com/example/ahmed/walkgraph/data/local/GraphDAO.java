@@ -2,15 +2,12 @@ package com.example.ahmed.walkgraph.data.local;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.util.Log;
 
 import com.example.ahmed.walkgraph.data.model.Graph;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.example.ahmed.walkgraph.utils.AppConstants.*;
@@ -25,7 +22,6 @@ public class GraphDAO {
     private DatabaseHelper helper;
     private SQLiteDatabase database;
     private static GraphDAO dao;
-    private static final String TAG = "GraphDao";
 
     private GraphDAO(Context context){
         helper = new DatabaseHelper(context);
@@ -48,64 +44,31 @@ public class GraphDAO {
     }
 
     public void addGraph(Graph graph){
-        long date = graph.getGraphDate().getTime();
-        String dateString = String.valueOf(date);
-        ContentValues dateValue = getGraphDate(dateString);
+        String date = graph.getGraphDate();
 
-        //add date first
-        database.insert(graphTable, null, dateValue);
-
-        //get all locations and corresponding content value for each location
-        List<Location> locations = graph.getLocations();
-        for (Location location: locations){
-            database.insert(locationTable, null, getLocationValues(location, dateString));
+        for (Location location: graph.getLocations()){
+            database.insert(locationTable, null, getLocationValues(location,
+                    date));
         }
     }
 
-    public Graph getGraph(long date){
-        //retrieve graph date
-        GraphWrapper wrapper = queryGraphTable(graphDate + " == ?",
-                new String[]{String.valueOf(date)});
-        Log.d("GraphDao", "wrapper size" + wrapper.getCount());
-        Graph graph = wrapper.getGraph();
-
-        //retrieve locations
-        List<Location> locationList = new ArrayList<>();
-        LocationWrapper locationWrapper = queryLocationTable(foreignKey + " == ?",
-                new String[]{String.valueOf(date)});
-        if (wrapper.getCount() == 0){
-            Log.d(TAG, "Empty cursor returned for graph check whereClause");
-            return null;
-        }
-
-        if (locationWrapper.getCount() == 0){
-            Log.d(TAG, "Empty cursor returned for locations check whereClause");
-            return null;
-        }
-        try {
-            locationWrapper.moveToFirst();
-            while (!locationWrapper.isAfterLast()){
-                locationList.add(locationWrapper.getLocation());
-                locationWrapper.moveToNext();
-            }
-        }finally {
-            locationWrapper.close();
-            wrapper.close();
-        }
-
-        //set graph locations
-        graph.setLocations(locationList);
-        return graph;
-    }
-
-    private Graph getGraphFromDate(long date){
-        //current graph
+    public Graph getGraph(int day, int month, int year){
         Graph graph = new Graph();
+        graph.setGraphDate(day, month, year);
+        List<Location> locations = getLocationsFromDate(graph.getGraphDate());
+        if (locations.isEmpty()){
+            return null;
+        }
+        graph.setLocations(locations);
+        return graph;
+    }
 
-        //retrieve locations
+    private List<Location> getLocationsFromDate(String date){
         List<Location> locationList = new ArrayList<>();
-        LocationWrapper locationWrapper = queryLocationTable(foreignKey + " == ?",
-                new String[]{"" + date});
+
+        LocationWrapper locationWrapper = queryLocationTableForLocations
+                (location_date + " == ?", new String[]{date});
+
         try {
             locationWrapper.moveToFirst();
             while (!locationWrapper.isAfterLast()){
@@ -116,37 +79,43 @@ public class GraphDAO {
             locationWrapper.close();
         }
 
-        //set graph locations
-        graph.setLocations(locationList);
-        return graph;
+        return locationList;
     }
 
     public List<Graph> getAllGraphs(){
-        List<Graph> graphDates = new ArrayList<>();
         List<Graph> graphList = new ArrayList<>();
-        GraphWrapper graphWrapper = queryGraphTable(null, null);
+        LocationWrapper allGraphs = queryLocationTableForDates(null, null);
 
-        //retrieve all dates
+        int day, month, year;
+
         try {
-            graphWrapper.moveToFirst();
-            while (!graphWrapper.isAfterLast()){
-                graphDates.add(graphWrapper.getGraph());
-                graphWrapper.moveToNext();
+            allGraphs.moveToFirst();
+            while (!allGraphs.isAfterLast()){
+                Graph graph = new Graph();
+                String[] date = allGraphs.LocationDate().split("/");
+
+                day = Integer.valueOf(date[0]);
+                month = Integer.valueOf(date[1]);
+                year = Integer.valueOf(date[2]);
+
+                graph.setGraphDate(day, month, year);
+                graphList.add(graph);
+                allGraphs.moveToNext();
             }
         }finally {
-            graphWrapper.close();
+            allGraphs.close();
         }
 
-        for (Graph graph : graphDates) {
-            graphList.add(getGraphFromDate(graph.getGraphDate().getTime()));
+        for (Graph graph : graphList) {
+            graph.setLocations(getLocationsFromDate(graph.getGraphDate()));
         }
         return graphList;
     }
 
-    private LocationWrapper queryLocationTable(String whereClause, String[] args){
+    private LocationWrapper queryLocationTableForDates(String whereClause, String[] args){
         return new LocationWrapper(database.query(
                 locationTable,
-                new String[]{foreignKey},
+                new String[]{location_date},
                 whereClause,
                 args,
                 null,
@@ -155,10 +124,10 @@ public class GraphDAO {
         ));
     }
 
-    private GraphWrapper queryGraphTable(String whereClause, String[] args){
-        return new GraphWrapper(database.query(
-                graphTable,
-                null,
+    private LocationWrapper queryLocationTableForLocations(String whereClause, String[] args){
+        return new LocationWrapper(database.query(
+                locationTable,
+                new String[]{latitude, longitude},
                 whereClause,
                 args,
                 null,
@@ -169,15 +138,9 @@ public class GraphDAO {
 
     private ContentValues getLocationValues(Location location, String date){
         ContentValues values = new ContentValues();
-        values.put(foreignKey, date);
+        values.put(location_date, date);
         values.put(latitude, location.getLatitude());
         values.put(longitude, location.getLongitude());
-        return values;
-    }
-
-    private ContentValues getGraphDate(String date){
-        ContentValues values = new ContentValues();
-        values.put(graphDate, date);
         return values;
     }
 }
