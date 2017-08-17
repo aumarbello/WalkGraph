@@ -17,17 +17,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table " + graphTable + "(" +
-                graphDate + " integer primary key )"
-        );
-
         sqLiteDatabase.execSQL("create table " + locationTable + "(" +
                 " _id integer primary key autoincrement, " +
                 latitude + ", " +
                 longitude + ", " +
-                foreignKey + ", " +
-                "FOREIGN KEY(" + foreignKey + ")" + " REFERENCES " + graphTable + "("
-                + graphDate + ")" + ")"
+                location_date +
+                ")"
         );
     }
 

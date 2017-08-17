@@ -71,7 +71,7 @@ public class Preferences {
     }
 
     public int getPollingInterval(){
-        return preferences.getInt(POLLING_INTERVAL, 0);
+        return preferences.getInt(POLLING_INTERVAL, 15);
     }
 
     public long getNotificationTime() {
@@ -79,11 +79,11 @@ public class Preferences {
     }
 
     public int getLocationFreq() {
-        return preferences.getInt(LOCATION_FREQ, 0);
+        return preferences.getInt(LOCATION_FREQ, 32);
     }
 
     public int getGraphKeepTime() {
-        return preferences.getInt(GRAPH_KEEP_TIME, 0);
+        return preferences.getInt(GRAPH_KEEP_TIME, 5);
     }
 
     public boolean getAnimateGraph() {

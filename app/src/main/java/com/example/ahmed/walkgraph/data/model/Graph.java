@@ -1,8 +1,6 @@
 package com.example.ahmed.walkgraph.data.model;
 
 import android.location.Location;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,15 +8,15 @@ import java.util.List;
  */
 
 public class Graph {
-    private Date graphDate;
+    private String graphDate;
     private List<Location> locations;
 
-    public Date getGraphDate() {
+    public String  getGraphDate() {
         return graphDate;
     }
 
-    public void setGraphDate(Date graphDate) {
-        this.graphDate = graphDate;
+    public void setGraphDate(int day, int month, int year) {
+        this.graphDate = day + "/" + month + "/" + year;
     }
 
     public List<Location> getLocations() {

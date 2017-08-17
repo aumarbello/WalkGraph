@@ -1,5 +1,6 @@
 package com.example.ahmed.walkgraph.dagger;
 
+import com.example.ahmed.walkgraph.notifications.LocationService;
 import com.example.ahmed.walkgraph.presentation.ContainerActivity;
 import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
@@ -21,4 +22,5 @@ public interface AppComponent {
     void inject(GraphListImpl fragment);
     void inject(SettingsFragmentImpl fragment);
     void inject(ContainerActivity activity);
+    void inject(LocationService service);
 }

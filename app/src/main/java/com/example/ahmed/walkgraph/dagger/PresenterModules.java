@@ -4,7 +4,6 @@ import com.example.ahmed.walkgraph.data.local.GraphDAO;
 import com.example.ahmed.walkgraph.data.prefs.Preferences;
 import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.list.GraphPresenterImpl;
-import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapPresenterImpl;
 import com.example.ahmed.walkgraph.presentation.settings.SettingsPresenterImpl;
 
@@ -30,8 +29,8 @@ class PresenterModules {
 
     @Provides
     @Singleton
-    MapPresenterImpl providesMapPresenter(MapFragmentImpl mapFragment, GraphDAO graphDAO){
-        return new MapPresenterImpl(graphDAO, mapFragment);
+    MapPresenterImpl providesMapPresenter(GraphDAO graphDAO){
+        return new MapPresenterImpl(graphDAO);
     }
 
     @Provides
