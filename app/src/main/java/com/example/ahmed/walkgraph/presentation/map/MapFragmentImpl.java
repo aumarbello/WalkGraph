@@ -3,10 +3,12 @@ package com.example.ahmed.walkgraph.presentation.map;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -19,6 +21,15 @@ import com.example.ahmed.walkgraph.R;
 import com.example.ahmed.walkgraph.data.model.Graph;
 import com.example.ahmed.walkgraph.data.prefs.Preferences;
 import com.example.ahmed.walkgraph.notifications.LocationService;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
@@ -48,7 +60,8 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     private MapCallBack callBack;
     private GoogleMap googleMap;
     private static final String TAG = "MapFragment";
-    private static final int permissionCode = 1;
+    public static final int permissionCode = 1000;
+    private int gpsStatus;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -58,8 +71,14 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
             googleMap = theMap;
             updateMapArea();
         });
-        startService();
+        checkPerm();
         setHasOptionsMenu(true);
+        try{
+            gpsStatus = Settings.Secure.getInt(getActivity().getContentResolver(),
+                    Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            Log.d(TAG, "Settings not found", e);
+        }
     }
 
     @Override
@@ -89,14 +108,13 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     }
 
     @Override
-    public void startService() {
+    public void checkPerm() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     permissionCode);
         }else {
-            getActivity().startService(new Intent(getActivity(),
-                    LocationService.class));
+            startLocationService();
         }
     }
 
@@ -143,11 +161,72 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
             case permissionCode:
                 if (grantedResults.length > 0 && grantedResults[0] ==
                         PackageManager.PERMISSION_GRANTED){
-                    getActivity().startService(new Intent(getActivity(),
-                            LocationService.class));
+                    startLocationService();
                 }
                 else
                     Log.d(TAG, "Access Denied");
         }
+    }
+
+    @Override
+    public void startLocationService() {
+        LocationRequest request = new LocationRequest()
+                .setFastestInterval(1500)
+                .setInterval(3000)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder settingsRequest = new LocationSettingsRequest.Builder();
+        settingsRequest.addLocationRequest(request);
+
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> responseTask = client.checkLocationSettings
+                (settingsRequest.build());
+
+        responseTask.addOnSuccessListener(getActivity(), locationSettingsResponse ->
+                locationScheduler());
+
+        responseTask.addOnFailureListener(getActivity(), e -> {
+            int statusCode = ((ApiException) e).getStatusCode();
+
+            switch (statusCode){
+                case CommonStatusCodes.RESOLUTION_REQUIRED:
+                    try {
+                        ResolvableApiException apiException = ((ResolvableApiException)e);
+                        apiException.startResolutionForResult(getActivity(), permissionCode);
+                        Log.d(TAG, "Dialog displayed");
+                    }catch (IntentSender.SendIntentException sendIntentException){
+                        Log.d(TAG, "Error displaying dialogBox", sendIntentException);
+                    }
+                    break;
+                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                    Log.d(TAG, "Unable to turn on location service", e);
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == permissionCode){
+            Log.d(TAG, "Result received in fragment");
+            locationScheduler();
+        }
+    }
+
+
+    public void locationScheduler() {
+        if (gpsStatus == 0){
+            onGPS();
+        }
+        getActivity().startService(new Intent(getActivity(),
+                LocationService.class));
+    }
+
+    @Override
+    public void onGPS() {
+        Intent gpsIntent = new Intent(
+                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+        );
+        startActivity(gpsIntent);
     }
 }
