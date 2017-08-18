@@ -29,7 +29,6 @@ public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private LocationManager manager;
     private static final int locationDistance = 0;
-    private static long locationInterval;
     private static Location theLocation;
     private static List<Location> locationList = new ArrayList<>();
 
@@ -51,7 +50,7 @@ public class LocationService extends Service {
         Log.d(TAG, "Entered onCreate");
         initializeManager();
 
-        locationInterval = preferences.getPollingInterval() * 1000;
+        long locationInterval = preferences.getPollingInterval() * 1000;
 
         try {
             manager.requestLocationUpdates(

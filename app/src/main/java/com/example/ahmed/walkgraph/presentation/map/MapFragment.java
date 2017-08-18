@@ -7,7 +7,10 @@ import com.example.ahmed.walkgraph.data.model.Graph;
  */
 
 public interface MapFragment {
-    void startService();
+    void startLocationService();
+    void checkPerm();
     void updateMapArea();
     void drawGraph(Graph graph);
+    void locationScheduler();
+    void onGPS();
 }

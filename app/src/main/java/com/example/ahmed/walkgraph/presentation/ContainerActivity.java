@@ -1,8 +1,10 @@
 package com.example.ahmed.walkgraph.presentation;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
@@ -92,5 +94,13 @@ public class ContainerActivity extends AppCompatActivity implements
     @Override
     public void returnToList() {
         switchToList();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == MapFragmentImpl.permissionCode){
+            mapFragment.onActivityResult(requestCode, resultCode, data);
+            Log.d("Activity Container", "Passing result to fragment");
+        }
     }
 }
