@@ -14,4 +14,7 @@ public interface SettingsFragment {
     void pollingInterval();
     void updatePreferences();
     void setNavListener();
+    void setStartTime();
+    void setEndTime();
+    void setNotificationTime();
 }
