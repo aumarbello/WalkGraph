@@ -1,5 +1,6 @@
 package com.example.ahmed.walkgraph.presentation.settings;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -13,11 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TimePicker;
 
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -40,18 +43,12 @@ public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
     @Inject
     SettingsPresenterImpl presenter;
 
-    @BindView(R.id.start_time_selector)
-    TimePicker startTimePicker;
     @BindView(R.id.start_time_button)
     Button startButton;
 
-    @BindView(R.id.stop_time_selector)
-    TimePicker stopTimePicker;
     @BindView(R.id.stop_time_button)
     Button stopTimeButton;
 
-    @BindView(R.id.notification_time_selector)
-    TimePicker notificationTimePicker;
     @BindView(R.id.notification_time_button)
     Button notificationTimeButton;
 
@@ -145,41 +142,18 @@ public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
     @Override
     public void saveGraphNotificationTime() {
         notificationTimeButton.setOnClickListener(view ->
-            notificationTimePicker.setVisibility(View.VISIBLE)
+            setNotificationTime()
         );
-        final Calendar calendar = Calendar.getInstance();
-        notificationTimePicker.setOnTimeChangedListener((timePicker, hourOfDay, minute) -> {
-            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            calendar.set(Calendar.MINUTE, minute);
-            notificationTimePicker.setVisibility(View.GONE);
-        } );
-        presenter.saveGraphNotificationTime(calendar.getTimeInMillis());
     }
 
     @Override
     public void savePollingStartTime() {
-        startButton.setOnClickListener(view -> startTimePicker
-                .setVisibility(View.VISIBLE));
-        final Calendar calendar = Calendar.getInstance();
-        startTimePicker.setOnTimeChangedListener((timePicker, hour, minute) -> {
-            calendar.set(Calendar.HOUR_OF_DAY, hour);
-            calendar.set(Calendar.MINUTE, minute);
-            startTimePicker.setVisibility(View.GONE);
-        });
-        presenter.savePollingStartTime(calendar.getTimeInMillis());
+        startButton.setOnClickListener(view -> setStartTime());
     }
 
     @Override
     public void savePollingStopTime() {
-        stopTimeButton.setOnClickListener(view -> stopTimePicker
-                .setVisibility(View.VISIBLE));
-        final Calendar calendar = Calendar.getInstance();
-        stopTimePicker.setOnTimeChangedListener((timePicker, hourOfDay, minute) -> {
-            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            calendar.set(Calendar.MINUTE, minute);
-            stopTimePicker.setVisibility(View.GONE);
-        });
-        presenter.savePollingStopTime(calendar.getTimeInMillis());
+        stopTimeButton.setOnClickListener(view -> setEndTime());
     }
 
     @Override
@@ -246,4 +220,57 @@ public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
             return false;
         });
     }
+
+    @Override
+    public void setStartTime() {
+        final Calendar calendar = Calendar.getInstance();
+        TimePickerDialog dialog = new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        dialog.show();
+        presenter.savePollingStartTime(calendar.getTimeInMillis());
+
+        SimpleDateFormat sdf = new SimpleDateFormat
+                ("h:mm a", Locale.US);
+        String dateString = sdf.format(calendar);
+
+        startButton.setText(dateString);
+    }
+
+    @Override
+    public void setEndTime() {
+        final Calendar calendar = Calendar.getInstance();
+        TimePickerDialog dialog = new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        dialog.show();
+        presenter.savePollingStartTime(calendar.getTimeInMillis());
+
+        SimpleDateFormat sdf = new SimpleDateFormat
+                ("h:mm a", Locale.US);
+        String dateString = sdf.format(calendar);
+
+        stopTimeButton.setText(dateString);
+    }
+
+    @Override
+    public void setNotificationTime() {
+        final Calendar calendar = Calendar.getInstance();
+        TimePickerDialog dialog = new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        dialog.show();
+        presenter.saveGraphNotificationTime(calendar.getTimeInMillis());
+
+        SimpleDateFormat sdf = new SimpleDateFormat
+                ("h:mm a", Locale.US);
+        String dateString = sdf.format(calendar);
+
+        notificationTimeButton.setText(dateString);
+    }
+
+
 }
