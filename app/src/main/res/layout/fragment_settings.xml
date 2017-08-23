@@ -132,5 +132,7 @@
         app:menu="@menu/settings_fragment"
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_nav"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"/>
 </RelativeLayout>
