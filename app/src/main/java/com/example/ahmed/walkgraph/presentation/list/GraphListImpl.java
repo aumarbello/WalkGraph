@@ -140,7 +140,7 @@ public class GraphListImpl extends Fragment implements GraphList {
         }
 
         void BindGraph(Graph graph){
-            String date = graph.getGraphDate().toString();
+            String date = graph.getGraphDate();
             String locationCount = graph.getLocations().size() + " Locations";
 
             graphDate.setText(getString(R.string.graph_date, date));

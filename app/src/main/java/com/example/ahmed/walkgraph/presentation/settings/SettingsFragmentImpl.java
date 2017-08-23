@@ -227,15 +227,15 @@ public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
         TimePickerDialog dialog = new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
+
+            SimpleDateFormat sdf = new SimpleDateFormat
+                    ("h:mm a", Locale.US);
+            String dateString = sdf.format(calendar.getTime());
+
+            startButton.setText(dateString);
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         dialog.show();
         presenter.savePollingStartTime(calendar.getTimeInMillis());
-
-        SimpleDateFormat sdf = new SimpleDateFormat
-                ("h:mm a", Locale.US);
-        String dateString = sdf.format(calendar);
-
-        startButton.setText(dateString);
     }
 
     @Override
@@ -244,15 +244,15 @@ public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
         TimePickerDialog dialog = new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
+
+            SimpleDateFormat sdf = new SimpleDateFormat
+                    ("h:mm a", Locale.US);
+            String dateString = sdf.format(calendar.getTime());
+
+            stopTimeButton.setText(dateString);
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         dialog.show();
         presenter.savePollingStartTime(calendar.getTimeInMillis());
-
-        SimpleDateFormat sdf = new SimpleDateFormat
-                ("h:mm a", Locale.US);
-        String dateString = sdf.format(calendar);
-
-        stopTimeButton.setText(dateString);
     }
 
     @Override
@@ -261,15 +261,15 @@ public class SettingsFragmentImpl extends Fragment implements SettingsFragment {
         TimePickerDialog dialog = new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
+
+            SimpleDateFormat sdf = new SimpleDateFormat
+                    ("h:mm a", Locale.US);
+            String dateString = sdf.format(calendar.getTime());
+
+            notificationTimeButton.setText(dateString);
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         dialog.show();
         presenter.saveGraphNotificationTime(calendar.getTimeInMillis());
-
-        SimpleDateFormat sdf = new SimpleDateFormat
-                ("h:mm a", Locale.US);
-        String dateString = sdf.format(calendar);
-
-        notificationTimeButton.setText(dateString);
     }
 
 

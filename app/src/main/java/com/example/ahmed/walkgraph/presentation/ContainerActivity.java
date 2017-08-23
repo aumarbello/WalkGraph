@@ -58,7 +58,7 @@ public class ContainerActivity extends AppCompatActivity implements
     @Override
     public void changeToMap() {
         manager.beginTransaction()
-                .replace(R.id.fragment_container, mapFragment)
+                .replace(R.id.fragment_container, graphList)
                 .commit();
     }
 
