@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         app:menu="@menu/settings_fragment"
         android:layout_alignParentBottom="true"
-        android:id="@+id/bottom_nav"
+        android:id="@+id/list_bottom_nav"
         android:background="@color/colorPrimary"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"/>
