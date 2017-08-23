@@ -1,6 +1,7 @@
 package com.example.ahmed.walkgraph.presentation;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,7 +65,17 @@ public class ContainerActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed(){
-
+        Fragment fragment = manager.findFragmentById(R.id.fragment_container);
+        if (fragment.getClass().getName().equals(mapFragment.getClass().getName())){
+            manager.beginTransaction()
+                    .replace(R.id.fragment_container, graphList)
+                    .commit();
+        }else if (fragment.getClass().getName().equals(settingsFragment.getClass().getName())){
+            manager.beginTransaction()
+                    .replace(R.id.fragment_container, graphList)
+                    .commit();
+        }else
+            super.onBackPressed();
     }
 
     // settings fragment callback
