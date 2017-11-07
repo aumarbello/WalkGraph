@@ -107,6 +107,10 @@ public class LocationService extends Service {
         return START_STICKY;
     }
 
+    public void showNotification() {
+        //todo build notification and send
+    }
+
     private class GraphListener implements LocationListener{
 
         GraphListener(String provider){
