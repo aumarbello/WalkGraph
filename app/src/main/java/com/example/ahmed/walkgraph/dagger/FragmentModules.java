@@ -14,7 +14,7 @@ import dagger.Provides;
  * Created by ahmed on 8/9/17.
  */
 @Module
-public class FragmentModules {
+class FragmentModules {
     @Provides
     @Singleton
     SplashFragmentImpl providesSplashFragment(){
