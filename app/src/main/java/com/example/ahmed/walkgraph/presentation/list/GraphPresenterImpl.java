@@ -8,6 +8,8 @@ import com.example.ahmed.walkgraph.data.model.Graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by ahmed on 8/9/17.
  */
@@ -17,6 +19,7 @@ public class GraphPresenterImpl implements GraphPresenter {
     private GraphDAO graphDAO;
     private List<Graph> graphs;
 
+    @Inject
     public GraphPresenterImpl(GraphListImpl graphList, GraphDAO graphDAO){
         this.graphList = graphList;
         this.graphDAO = graphDAO;
