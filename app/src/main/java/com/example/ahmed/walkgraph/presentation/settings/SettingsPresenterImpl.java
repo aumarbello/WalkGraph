@@ -2,12 +2,16 @@ package com.example.ahmed.walkgraph.presentation.settings;
 
 import com.example.ahmed.walkgraph.data.prefs.Preferences;
 
+import javax.inject.Inject;
+
 /**
  * Created by ahmed on 8/9/17.
  */
 
 public class SettingsPresenterImpl implements SettingsPresenter {
     private Preferences preferences;
+
+    @Inject
     public SettingsPresenterImpl(Preferences preferences){
         this.preferences = preferences;
     }
