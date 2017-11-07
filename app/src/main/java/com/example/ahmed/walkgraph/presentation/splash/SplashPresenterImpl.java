@@ -4,6 +4,8 @@ import android.os.SystemClock;
 
 import com.example.ahmed.walkgraph.utils.RxUtils;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 
 /**
@@ -13,7 +15,7 @@ import io.reactivex.Observable;
 public class SplashPresenterImpl implements SplashPresenter {
     private SplashFragment fragment;
     private final int Splash_Time_Out = 3000;
-
+    @Inject
     public SplashPresenterImpl(SplashFragmentImpl fragment){
         this.fragment = fragment;
     }
