@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by ahmed on 8/9/17.
  */
@@ -19,6 +21,7 @@ public class MapPresenterImpl implements MapPresenter {
     private GraphDAO graphDAO;
     private static final String TAG = "Map Presenter";
 
+    @Inject
     public MapPresenterImpl(GraphDAO graphDAO){
         this.graphDAO = graphDAO;
     }

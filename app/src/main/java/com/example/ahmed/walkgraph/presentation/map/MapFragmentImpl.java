@@ -20,7 +20,7 @@ import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 import com.example.ahmed.walkgraph.data.model.Graph;
 import com.example.ahmed.walkgraph.data.prefs.Preferences;
-import com.example.ahmed.walkgraph.notifications.LocationService;
+import com.example.ahmed.walkgraph.notifications.TimeService;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -217,9 +217,11 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     public void locationScheduler() {
         if (gpsStatus == 0){
             onGPS();
+            //todo return
         }
-        getActivity().startService(new Intent(getActivity(),
-                LocationService.class));
+
+        //todo start time service instead
+        TimeService.setTimeInterval(getActivity());
     }
 
     @Override
@@ -227,6 +229,8 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
         Intent gpsIntent = new Intent(
                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
         );
+        //todo start activity for result and check for corresponding
+        // todo code in onActivityResult
         startActivity(gpsIntent);
     }
 }
