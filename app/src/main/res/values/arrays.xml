@@ -8,11 +8,26 @@
         <item>60 minutes</item>
     </string-array>
 
+    <string-array name="polling_interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="graph_keep">
         <item>1 day</item>
         <item>2 days</item>
         <item>3 days</item>
         <item>4 days</item>
         <item>5 days</item>
+    </string-array>
+
+    <string-array name="graph_keep_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 </resources>
