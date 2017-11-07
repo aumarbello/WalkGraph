@@ -5,8 +5,8 @@ allprojects {
 }
 //defining versions in one place to avoid version conflicts
 ext {
-    buildToolVersion = "26.0.0"
-    minimumSdk = 21
+    buildToolVersion = '26.0.0'
+    minimumSdk = 15
     targetSdk = 26
     compiledSdk = 26
 
@@ -16,14 +16,14 @@ ext {
     rxAndroidVersion = '2.0.1'
     dagger2Version = '2.9'
     butterKnifeVersion = '8.5.1'
+    googlePlayServiceVersion = '11.0.2'
 
     //Test versions
-    jUnitVersion = "4.12"
-    mockitoVersion = "1.10.19"
-    espressoVersion = "2.2.2"
-    roboLectricVersion = "3.4-rc5"
-    roboLectricShadowsVersion = "3.0"
-    googleMapsVersion = "11.0.2"
+    jUnitVersion = '4.12'
+    mockitoVersion = '1.10.19'
+    espressoVersion = '2.2.2'
+    roboLectricVersion = '3.4-rc5'
+    roboLectricShadowsVersion = '3.0'
 
     // Library dependencies
     supportDependencies = [
@@ -50,8 +50,8 @@ ext {
     ]
 
     playServices = [
-            maps : "com.google.android.gms:play-services-maps:${googleMapsVersion}",
-            location : "com.google.android.gms:play-services-location:${googleMapsVersion}"
+            maps : "com.google.android.gms:play-services-maps:${googlePlayServiceVersion}",
+            location : "com.google.android.gms:play-services-location:${googlePlayServiceVersion}"
     ]
 
     // Test dependencies
