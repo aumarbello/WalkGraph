@@ -52,7 +52,7 @@
             android:summary="@string/intent_git_summary">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://github.com/a-u-bello/ALCAssessment"/>
+                android:data="https://github.com/a-u-bello/WalkGraph"/>
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
