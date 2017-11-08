@@ -2,7 +2,7 @@ package com.example.ahmed.walkgraph.dagger;
 
 import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
-import com.example.ahmed.walkgraph.presentation.settings.SettingsFragmentImpl;
+import com.example.ahmed.walkgraph.presentation.settings.SettingsFragment;
 import com.example.ahmed.walkgraph.presentation.splash.SplashFragmentImpl;
 
 import javax.inject.Singleton;
@@ -35,7 +35,7 @@ class FragmentModules {
 
     @Provides
     @Singleton
-    SettingsFragmentImpl providesSettingsFragment(){
-        return new SettingsFragmentImpl();
+    SettingsFragment providesSettingsFragment(){
+        return new SettingsFragment();
     }
 }

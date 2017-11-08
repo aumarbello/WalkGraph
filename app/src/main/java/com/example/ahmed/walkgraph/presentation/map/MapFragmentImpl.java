@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 import com.example.ahmed.walkgraph.data.model.Graph;
-import com.example.ahmed.walkgraph.data.prefs.Preferences;
 import com.example.ahmed.walkgraph.notifications.TimeService;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;

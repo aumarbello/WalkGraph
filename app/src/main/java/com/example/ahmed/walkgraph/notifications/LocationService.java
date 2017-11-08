@@ -13,8 +13,8 @@ import android.util.Log;
 
 import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.data.local.GraphDAO;
+import com.example.ahmed.walkgraph.data.local.prefs.WalkPreference;
 import com.example.ahmed.walkgraph.data.model.Graph;
-import com.example.ahmed.walkgraph.data.prefs.Preferences;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +36,7 @@ public class LocationService extends Service {
     GraphDAO graphDAO;
 
     @Inject
-    Preferences preferences;
+    WalkPreference preference;
 
     @Nullable
     @Override
@@ -50,7 +50,7 @@ public class LocationService extends Service {
         Log.d(TAG, "Entered onCreate");
         initializeManager();
 
-        long locationInterval = preferences.getPollingInterval() * 1000;
+        long locationInterval = preference.getPollingInterval() * 1000;
 
         try {
             manager.requestLocationUpdates(

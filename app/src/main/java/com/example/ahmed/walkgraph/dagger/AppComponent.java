@@ -5,7 +5,7 @@ import com.example.ahmed.walkgraph.notifications.TimeService;
 import com.example.ahmed.walkgraph.presentation.ContainerActivity;
 import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
-import com.example.ahmed.walkgraph.presentation.settings.SettingsFragmentImpl;
+import com.example.ahmed.walkgraph.presentation.settings.SettingsFragment;
 import com.example.ahmed.walkgraph.presentation.splash.SplashFragmentImpl;
 
 import javax.inject.Singleton;
@@ -21,7 +21,7 @@ public interface AppComponent {
     void inject(SplashFragmentImpl fragment);
     void inject(MapFragmentImpl fragment);
     void inject(GraphListImpl fragment);
-    void inject(SettingsFragmentImpl fragment);
+    void inject(SettingsFragment fragment);
     void inject(ContainerActivity activity);
     void inject(LocationService service);
     void inject(TimeService timeService);

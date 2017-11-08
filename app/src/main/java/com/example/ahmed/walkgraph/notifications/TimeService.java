@@ -10,11 +10,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.ahmed.walkgraph.App;
-import com.example.ahmed.walkgraph.data.prefs.Preferences;
+import com.example.ahmed.walkgraph.data.local.prefs.WalkPreference;
 import com.example.ahmed.walkgraph.utils.NetworkUtil;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -24,11 +23,13 @@ import javax.inject.Inject;
 
 public class TimeService extends IntentService {
     private static final String TAG = "TimeService";
+    private static final int REPEAT_TIME = 1000;
 
     @Inject
     LocationService service;
+
     @Inject
-    Preferences preferences;
+    WalkPreference preference;
 
     public TimeService() {
         super(TAG);
@@ -47,19 +48,16 @@ public class TimeService extends IntentService {
         }
 
         Calendar startCalender = Calendar.getInstance();
-        long startDateLong = preferences.getStartPolling();
-        Date startDate = new Date(startDateLong);
-        startCalender.setTime(startDate);
+        long startDateLong = preference.startPollingTime();
+        startCalender.setTimeInMillis(startDateLong);
 
         Calendar stopCalender = Calendar.getInstance();
-        long stopDateLong = preferences.getStopPolling();
-        Date stopDate = new Date(stopDateLong);
-        stopCalender.setTime(stopDate);
+        long stopDateLong = preference.stopPollingTime();
+        stopCalender.setTimeInMillis(stopDateLong);
 
         Calendar notificationCalender = Calendar.getInstance();
-        long notificationDateLong = preferences.getStartPolling();
-        Date notificationDate = new Date(notificationDateLong);
-        notificationCalender.setTime(notificationDate);
+        long notificationDateLong = preference.notificationTime();
+        notificationCalender.setTimeInMillis(notificationDateLong);
 
         Calendar currentTime = Calendar.getInstance();
 
@@ -91,7 +89,7 @@ public class TimeService extends IntentService {
 
         if (isTimeAlarmOn(context)){
             manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime(), AlarmManager.INTERVAL_HOUR,
+                    SystemClock.elapsedRealtime(), REPEAT_TIME,
                     pendingIntent);
         }else {
             manager.cancel(pendingIntent);

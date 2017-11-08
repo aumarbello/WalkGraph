@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.ahmed.walkgraph.data.local.GraphDAO;
-import com.example.ahmed.walkgraph.data.prefs.Preferences;
 import com.example.ahmed.walkgraph.notifications.LocationService;
 
 import javax.inject.Singleton;
@@ -27,12 +26,6 @@ public class ApplicationModules {
     @Singleton
     Context providesContext(){
         return application;
-    }
-
-    @Provides
-    @Singleton
-    Preferences providePreference(Context context){
-        return new Preferences(context);
     }
 
     @Provides

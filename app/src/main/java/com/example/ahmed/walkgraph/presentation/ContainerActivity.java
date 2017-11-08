@@ -11,7 +11,7 @@ import com.example.ahmed.walkgraph.App;
 import com.example.ahmed.walkgraph.R;
 import com.example.ahmed.walkgraph.presentation.list.GraphListImpl;
 import com.example.ahmed.walkgraph.presentation.map.MapFragmentImpl;
-import com.example.ahmed.walkgraph.presentation.settings.SettingsFragmentImpl;
+import com.example.ahmed.walkgraph.presentation.settings.SettingsFragment;
 import com.example.ahmed.walkgraph.presentation.splash.SplashFragmentImpl;
 
 import javax.inject.Inject;
@@ -23,8 +23,6 @@ import javax.inject.Inject;
 public class ContainerActivity extends AppCompatActivity implements
         //splash fragment
         SplashFragmentImpl.SplashCallback,
-        //settings fragment
-        SettingsFragmentImpl.SettingsCallBack,
         //map fragment
         MapFragmentImpl.MapCallBack,
         //graph fragment
@@ -37,7 +35,7 @@ public class ContainerActivity extends AppCompatActivity implements
     MapFragmentImpl mapFragment;
 
     @Inject
-    SettingsFragmentImpl settingsFragment;
+    SettingsFragment settingsFragment;
 
     @Inject
     GraphListImpl graphList;
@@ -79,8 +77,7 @@ public class ContainerActivity extends AppCompatActivity implements
     }
 
     // settings fragment callback
-    @Override
-    public void switchToList() {
+    private void switchToList() {
        manager.beginTransaction()
                .replace(R.id.fragment_container, graphList)
                .commit();
@@ -96,7 +93,7 @@ public class ContainerActivity extends AppCompatActivity implements
     //graphList fragment's specific callback
     @Override
     public void switchToSettings() {
-        manager.beginTransaction()
+        getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, settingsFragment)
                 .commit();
     }
