@@ -15,24 +15,39 @@ import javax.inject.Inject;
 
 /**
  * Created by ahmed on 8/9/17.
+ *
+ * @author Ahmed Umar.
+ * Class that implements the MapPresenter contract.
  */
 
 public class MapPresenterImpl implements MapPresenter {
+    /**
+     * Fields.
+     */
+
     private GraphDAO graphDAO;
     private static final String TAG = "Map Presenter";
 
+    /**
+     * Constructor.
+     * @param graphDAO to allow for reading graphs from the database.
+     */
     @Inject
-    public MapPresenterImpl(GraphDAO graphDAO){
+    MapPresenterImpl(GraphDAO graphDAO){
         this.graphDAO = graphDAO;
     }
 
+    /**
+     * Reads the most recent graph from the database.
+     * @return most recent graph if not null else dummy graph object.
+     */
     @Override
     public Graph getRecentGraph() {
         int day , month, year;
 
         Calendar calendar = Calendar.getInstance();
 
-        day = calendar.get(Calendar.DAY_OF_MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
         month = calendar.get(Calendar.MONTH);
         year = calendar.get(Calendar.YEAR);
 
@@ -44,6 +59,10 @@ public class MapPresenterImpl implements MapPresenter {
         return dbGraph;
     }
 
+    /**
+     * Generates dummy graph object.
+     * @return dummy graph.
+     */
     @Override
     public Graph testGraph() {
         Graph graph = new Graph();

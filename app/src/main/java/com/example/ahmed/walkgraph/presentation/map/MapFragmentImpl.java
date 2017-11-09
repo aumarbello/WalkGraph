@@ -48,6 +48,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Created by ahmed on 8/9/17.
  *
+ * @author Ahmed Umar.
  * Fragment to show a select or initial Dummy 'walk' on the map.
  *
  * Also requests for location permission from the user and prompts the user
