@@ -1,7 +1,6 @@
 package com.example.ahmed.walkgraph.presentation;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +17,10 @@ import javax.inject.Inject;
 
 /**
  * Created by ahmed on 8/9/17.
+ *
+ * Containing activity hosting all the fragments of the application
+ *
+ * implements CallBacks from Splash, Map, and GraphList
  */
 
 public class ContainerActivity extends AppCompatActivity implements
@@ -28,6 +31,9 @@ public class ContainerActivity extends AppCompatActivity implements
         //graph fragment
         GraphListImpl.GraphListCallBack{
 
+    /**
+     * Inject Fields - Fragments
+     */
     @Inject
     SplashFragmentImpl splashFragment;
 
@@ -41,6 +47,18 @@ public class ContainerActivity extends AppCompatActivity implements
     GraphListImpl graphList;
 
     private FragmentManager manager;
+
+    /**
+     * setContentView.
+     *
+     * initializes injected fields to prevent NPE.
+     *
+     * initializes FragmentManager.
+     *
+     * adds splashFragment as the first fragment.
+     *
+     * @param savedInstanceState of the activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +71,9 @@ public class ContainerActivity extends AppCompatActivity implements
                 .commit();
     }
 
-    //splash fragment callback
+    /**
+     * splash fragment callback.
+     */
     @Override
     public void changeToMap() {
         manager.beginTransaction()
@@ -61,28 +81,29 @@ public class ContainerActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    /**
+     * Switch to list fragment.
+     */
     @Override
     public void onBackPressed(){
-        Fragment fragment = manager.findFragmentById(R.id.fragment_container);
-        if (fragment.getClass().getName().equals(mapFragment.getClass().getName())){
-            manager.beginTransaction()
-                    .replace(R.id.fragment_container, graphList)
-                    .commit();
-        }else if (fragment.getClass().getName().equals(settingsFragment.getClass().getName())){
-            manager.beginTransaction()
-                    .replace(R.id.fragment_container, graphList)
-                    .commit();
+        if (mapFragment.isAdded() || settingsFragment.isAdded()){
+            switchToList();
         }else
             super.onBackPressed();
     }
 
-    // settings fragment callback
+    /**
+     * Method to switch back to fragment list.
+     */
     private void switchToList() {
        manager.beginTransaction()
                .replace(R.id.fragment_container, graphList)
                .commit();
     }
 
+    /**
+     * GraphList fragment's specific callback, to switch to map.
+     */
     @Override
     public void switchToMap() {
         manager.beginTransaction()
@@ -90,7 +111,9 @@ public class ContainerActivity extends AppCompatActivity implements
                 .commit();
     }
 
-    //graphList fragment's specific callback
+    /**
+     * GraphList fragment's specific callback, to switch to settings.
+     */
     @Override
     public void switchToSettings() {
         getFragmentManager().beginTransaction()
@@ -98,12 +121,20 @@ public class ContainerActivity extends AppCompatActivity implements
                 .commit();
     }
 
-    //map fragment's callback
+    /**
+     * Map fragment's callback.
+     */
     @Override
     public void returnToList() {
         switchToList();
     }
 
+    /**
+     * Passing activity result to fragment, is cases where its not called.
+     * @param requestCode of the request.
+     * @param resultCode of the request's result- OK or NOT.
+     * @param data of the request.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == MapFragmentImpl.permissionCode){
