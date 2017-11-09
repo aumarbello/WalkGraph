@@ -14,9 +14,15 @@ import java.util.Calendar;
 
 /**
  * Created by ahmed on 11/7/17.
+ *
+ * Custom TimePreference To Allow user select time.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class TimePreference extends DialogPreference {
+    /**
+     * TimePicker Field and Constructors
+     */
+
     private TimePicker timePicker;
 
     public TimePreference(Context context, AttributeSet attrs,
@@ -46,6 +52,12 @@ public class TimePreference extends DialogPreference {
         this(context, null);
     }
 
+    /**
+     * Persist the selected time to sharedPreference
+     * and notifies dependent shared preferences.
+     * @param hour selected.
+     * @param minute selected.
+     */
     private void setTime(int hour, int minute){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
@@ -57,6 +69,12 @@ public class TimePreference extends DialogPreference {
         notifyDependencyChange(shouldDisableDependents());
     }
 
+
+    /**
+     * Prepares the preference dialog to be displayed
+     * by adding the timePicker as it's view.
+     * @param builder AlertDialog builder to be used for customization.
+     */
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
@@ -64,6 +82,15 @@ public class TimePreference extends DialogPreference {
         builder.setView(timePicker);
     }
 
+    /**
+     * Called when the dialog is closed, checks if the dialog was closed
+     * as a result of the user selecting the OK button
+     * and not cancelling or touching outside.
+     *
+     * If the time selected is persisted only if the dialog was closed
+     * as a result of the user clicking OK.
+     * @param positiveResult if dialog was closed by clicking OK.
+     */
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
@@ -73,11 +100,22 @@ public class TimePreference extends DialogPreference {
         }
     }
 
+    /**
+     * Gets the default value of the shared preference.
+     * @param a - typedArray to retrieve the value from.
+     * @param index where the value is saved.
+     * @return the Default value of the pref - long in this case.
+     */
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
         return Long.valueOf(a.getString(index));
     }
 
+    /**
+     * Sets the initial value of the preference.
+     * @param restorePersistedValue true if the value is retrieved from SharedPreference.
+     * @param defaultValue of the Preference.
+     */
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         super.onSetInitialValue(restorePersistedValue, defaultValue);
@@ -85,32 +123,58 @@ public class TimePreference extends DialogPreference {
             Calendar calendar = Calendar.getInstance();
             long savedTime = getPersistedLong(calendar.getTimeInMillis());
             calendar.setTimeInMillis(savedTime);
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
 
-            timePicker.setHour(hour);
-            timePicker.setMinute(minute);
+            setTimePicker(calendar);
         }else {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis((long) defaultValue);
 
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
-            timePicker.setHour(hour);
-            timePicker.setMinute(minute);
-
-            setTime(hour, minute);
+            int [] fields = setTimePicker(calendar);
+            //persists only if the value is not from sharedPreference.
+            setTime(fields[0], fields[1]);
         }
     }
 
+    /**
+     * Sets the values of the time picker.
+     * @param calendar to get values from.
+     * @return int array containing the fields of the calender passed in.
+     */
+    private int[] setTimePicker(Calendar calendar) {
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        timePicker.setHour(hour);
+        timePicker.setMinute(minute);
+
+        return new int[]{hour, minute};
+    }
+
+    /**
+     * States when to disable dependent preferences.
+     *
+     * When the previous hour and minute wasn't changed they are disabled.
+     *
+     * @return whether the dependent preferences should be disabled or not.
+     */
     @Override
     public boolean shouldDisableDependents() {
-        Calendar now = Calendar.getInstance();
-        long persistedLong = getPersistedLong(now.getTimeInMillis());
-        boolean isEqual =  now.getTimeInMillis() == persistedLong;
+        Calendar nowCalender = Calendar.getInstance();
+        long persistedLong = getPersistedLong(nowCalender.getTimeInMillis());
+
+        Calendar persistedCalender = Calendar.getInstance();
+        persistedCalender.setTimeInMillis(persistedLong);
+        boolean isEqual =  nowCalender.get(Calendar.HOUR_OF_DAY)
+                == persistedCalender.get(Calendar.HOUR_OF_DAY)
+                && nowCalender.get(Calendar.MINUTE)
+                == persistedCalender.get(Calendar.MINUTE);
         return isEqual ||  super.shouldDisableDependents();
     }
 
+    /**
+     * Saves the instance of the preference, a calendar object with the hour and minute selected.
+     * @return of the SaveState.
+     */
     @Override
     protected Parcelable onSaveInstanceState() {
         final Parcelable superParcel =  super.onSaveInstanceState();
@@ -126,7 +190,31 @@ public class TimePreference extends DialogPreference {
         return currentState;
     }
 
+    /**
+     * Restoring the state of the preference.
+     * @param state of get the saved value from.
+     */
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state == null || !state.getClass().equals(SavedState.class)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(savedState.timeInMillSecs);
+        setTimePicker(calendar);
+    }
+
+    /**
+     * Class to allow for saving instance of this preference.
+     */
     private static class SavedState extends BaseSavedState{
+        /**
+         * Persistable long field of selected hour and minute and constructors.
+         */
         long timeInMillSecs;
         public SavedState(Parcel source) {
             super(source);
@@ -138,6 +226,11 @@ public class TimePreference extends DialogPreference {
             super(superState);
         }
 
+        /**
+         * Writes the values of this preference to a parcel.
+         * @param dest to write value to.
+         * @param flags associated with parcel.
+         */
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
