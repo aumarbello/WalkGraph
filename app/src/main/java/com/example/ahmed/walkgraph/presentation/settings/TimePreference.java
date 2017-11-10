@@ -25,9 +25,8 @@ public class TimePreference extends DialogPreference {
 
     private TimePicker timePicker;
 
-    public TimePreference(Context context, AttributeSet attrs,
-                          int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    public TimePreference(Context context, AttributeSet attrs, int defStyleAttr){
+        super(context, attrs, defStyleAttr);
 
         timePicker = new TimePicker(context);
         timePicker.setId(View.generateViewId());
@@ -40,12 +39,8 @@ public class TimePreference extends DialogPreference {
         setNegativeButtonText(android.R.string.cancel);
     }
 
-    public TimePreference(Context context, AttributeSet attrs, int defStyleAttr){
-        this(context, attrs, defStyleAttr, 0);
-    }
-
     public TimePreference(Context context, AttributeSet attrs){
-        this(context, attrs, android.R.style.ThemeOverlay_Material_Light);
+        this(context, attrs, android.R.attr.dialogPreferenceStyle);
     }
 
     public TimePreference(Context context){
