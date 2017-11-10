@@ -1,8 +1,8 @@
 package com.example.ahmed.walkgraph.presentation;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -67,7 +67,7 @@ public class ContainerActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ((App)getApplication()).getComponent().inject(this);
 
-        manager = getSupportFragmentManager();
+        manager = getFragmentManager();
         manager.beginTransaction()
                 .add(R.id.fragment_container, splashFragment)
                 .commit();
@@ -119,7 +119,7 @@ public class ContainerActivity extends AppCompatActivity implements
      */
     @Override
     public void switchToSettings() {
-        getFragmentManager().beginTransaction()
+        manager.beginTransaction()
                 .replace(R.id.fragment_container, settingsFragment)
                 .commit();
     }

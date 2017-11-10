@@ -8,7 +8,7 @@ package com.example.ahmed.walkgraph.presentation.splash;
 
 public interface SplashPresenter {
     /**
-     * Switches to MapFragment
+     * Switches to MapFragmentContract
      */
     void openMapFragment();
 }

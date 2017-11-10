@@ -8,7 +8,7 @@ import com.example.ahmed.walkgraph.data.model.Graph;
  * @author Ahmed Umar MVP Presenter Contract.
  */
 
-public interface MapFragment {
+public interface MapFragmentContract {
     /**
      * Checks location settings and attempts to change it.
      */

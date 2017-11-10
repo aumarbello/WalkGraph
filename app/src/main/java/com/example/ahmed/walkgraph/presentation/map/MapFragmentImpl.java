@@ -32,7 +32,7 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
@@ -55,7 +55,8 @@ import static android.app.Activity.RESULT_OK;
  * to turn GPS on if initially off.
  */
 
-public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
+public class MapFragmentImpl extends MapFragment
+        implements MapFragmentContract {
 
     /**
      * Callback interface to be implemented by containing activity.
@@ -85,7 +86,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
      */
     private MapCallBack callBack;
     private GoogleMap googleMap;
-    private static final String TAG = "MapFragment";
+    private static final String TAG = "MapFragmentContract";
     public static final int permissionCode = 1000;
     private static final int gpsReqCode = 1234;
     private int gpsStatus;

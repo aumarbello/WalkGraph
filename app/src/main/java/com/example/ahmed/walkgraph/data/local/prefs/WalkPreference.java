@@ -19,7 +19,7 @@ public class WalkPreference {
     private static final String LOCATION_FREQ = "FrequencyOfLocation";
 
     @Inject
-    public WalkPreference(Context context){
+    WalkPreference(Context context){
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         resources = context.getResources();
     }
@@ -30,11 +30,15 @@ public class WalkPreference {
     }
 
     public int keyDays(){
-        return preferences.getInt(resources.getString(R.string.key_graph_keep), 3);
+        String valueString = preferences.getString(
+                resources.getString(R.string.key_graph_keep), "3");
+        return Integer.parseInt(valueString);
     }
 
     public int pollingInterval(){
-        return preferences.getInt(resources.getString(R.string.key_polling_interval), 15);
+        String valueString = preferences.getString
+                (resources.getString(R.string.key_polling_interval), "15");
+        return Integer.parseInt(valueString);
     }
 
     public long startPollingTime(){
