@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/btn_dialog"
+        android:src="@drawable/logo"
         android:layout_centerInParent="true"
         android:contentDescription="@string/walk_graph_logo"/>
 
@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/splash_bottom_text"
+        android:textSize="15sp"
         android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/medium_text_spacing"

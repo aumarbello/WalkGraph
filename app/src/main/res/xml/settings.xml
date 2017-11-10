@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_general">
+        <SwitchPreference
+            android:key="@string/key_animate_graph"
+            android:title="@string/animate_graph_title"
+            android:summary="@string/animate_graph_summary"
+            android:defaultValue="false"/>
+        <ListPreference
+            android:key="@string/key_polling_interval"
+            android:title="@string/polling_interval_title"
+            android:entries="@array/polling_interval"
+            android:entryValues="@array/polling_interval_values"
+            android:defaultValue="@string/def_value_list_pref" />
+
+        <ListPreference
+            android:key="@string/key_graph_keep"
+            android:title="@string/graph_keep_days_title"
+            android:entries="@array/graph_keep"
+            android:entryValues="@array/graph_keep_values"
+            android:defaultValue="@string/def_value_list_pref"/>
+
+        <com.example.ahmed.walkgraph.presentation.settings.TimePreference
+            android:key="@string/key_start_polling"
+            android:title="@string/start_time_title"
+            android:summary="@string/start_time_summary"
+            android:defaultValue="@string/start_time_def_value"/>
+
+        <com.example.ahmed.walkgraph.presentation.settings.TimePreference
+            android:key="@string/key_stop_polling"
+            android:title="@string/stop_time_title"
+            android:summary="@string/stop_time_summary"
+            android:defaultValue="@string/stop_time_def_value"/>
+
+        <com.example.ahmed.walkgraph.presentation.settings.TimePreference
+            android:key="@string/key_notification_time"
+            android:title="@string/title_notification_time"
+            android:summary="@string/summary_notification_time"
+            android:defaultValue="@string/notification_time_def_value"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_about">
+        <Preference
+            android:selectable="false"
+            android:summary="@string/pref_about_summary"
+            />
+        <Preference
+            android:title="@string/pref_about_version"
+            android:summary="@string/pref_about_version_number"
+            />
+        <Preference android:title="@string/intent_git_title"
+            android:summary="@string/intent_git_summary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/a-u-bello/WalkGraph"/>
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -32,5 +32,6 @@
         <service android:name=".presentation.map.LocationScheduler"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".notifications.LocationService" />
+        <service android:name=".notifications.TimeService" />
     </application>
 </manifest>

@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.ahmed.walkgraph.data.local.GraphDAO;
-import com.example.ahmed.walkgraph.data.prefs.Preferences;
+import com.example.ahmed.walkgraph.notifications.LocationService;
 
 import javax.inject.Singleton;
 
@@ -30,13 +30,13 @@ public class ApplicationModules {
 
     @Provides
     @Singleton
-    Preferences providePreference(Context context){
-        return new Preferences(context);
+    GraphDAO providesGraphDao(Context context){
+        return GraphDAO.getDao(context);
     }
 
     @Provides
     @Singleton
-    GraphDAO providesGraphDao(Context context){
-        return GraphDAO.getDao(context);
+    LocationService providesLocationService() {
+        return new LocationService();
     }
 }

@@ -6,6 +6,10 @@ import android.util.Log;
 
 /**
  * Created by ahmed on 8/12/17.
+ *
+ * @author Ahmed Umar
+ * TODO consider using this service to schedule jobs: START TRACKING,
+ * TODO STOP TRACKING AND SHOW NOTIFICATION.
  */
 
 public class LocationScheduler extends JobService {

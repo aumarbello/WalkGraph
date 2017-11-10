@@ -8,20 +8,41 @@ import com.example.ahmed.walkgraph.data.model.Graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by ahmed on 8/9/17.
+ *
+ * @author Ahmed Umar.
+ *
+ * Class that implements the GraphPresenter contract.
  */
 
 public class GraphPresenterImpl implements GraphPresenter {
+
+    /**
+     * Fields.
+     */
+
     private GraphListImpl graphList;
     private GraphDAO graphDAO;
     private List<Graph> graphs;
 
-    public GraphPresenterImpl(GraphListImpl graphList, GraphDAO graphDAO){
+    /**
+     * Constructor.
+     * @param graphList fragment to interact with.
+     * @param graphDAO to retrieve graphs from.
+     */
+    @Inject
+    GraphPresenterImpl(GraphListImpl graphList, GraphDAO graphDAO){
         this.graphList = graphList;
         this.graphDAO = graphDAO;
         graphs = new ArrayList<>();
     }
+
+    /**
+     * Calls database to get all graphs and updates the recyclerView.
+     */
 
     @Override
     public void getGraphList() {
@@ -34,5 +55,4 @@ public class GraphPresenterImpl implements GraphPresenter {
         graphList.setGraphList(graphs);
         graphList.update();
     }
-    // TODO: 8/10/17 perform call to db in different thread, consider using observable
 }
