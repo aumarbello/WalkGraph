@@ -7,8 +7,10 @@ package com.example.ahmed.walkgraph.presentation.splash;
  */
 
 public interface SplashFragment {
+
     /**
      * Switches to MapFragment
      */
+
     void openMapFragment();
 }

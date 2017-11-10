@@ -121,9 +121,11 @@ public class GraphListImpl extends Fragment implements GraphList {
             throw new RuntimeException(context.toString() + "Must implement GraphListCall");
     }
 
+
     /**
      * Unbinds the view when the fragment is being destroyed.
      */
+
     @Override
     public void onDestroyView(){
         super.onDestroyView();
@@ -134,6 +136,7 @@ public class GraphListImpl extends Fragment implements GraphList {
      * Adds graphs from database to list of graphs.
      * @param allGraphs list of all graphs from database.
      */
+
     @Override
     public void setGraphList(List<Graph> allGraphs) {
         graphList = allGraphs;
@@ -142,6 +145,7 @@ public class GraphListImpl extends Fragment implements GraphList {
     /**
      * Updates the recyclerView when graphs have been added.
      */
+
     @Override
     public void update() {
         if (adapter == null) {
@@ -161,6 +165,7 @@ public class GraphListImpl extends Fragment implements GraphList {
     /**
      * Sets up view's bottom navigation bar.
      */
+
     @Override
     public void setUpBottomNav() {
         navigationView.setOnNavigationItemSelectedListener(item -> {
@@ -179,6 +184,7 @@ public class GraphListImpl extends Fragment implements GraphList {
     /**
      * GraphViewHolder for use with GraphAdapter.
      */
+
     class GraphHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.graph_date)
         TextView graphDate;
@@ -202,6 +208,7 @@ public class GraphListImpl extends Fragment implements GraphList {
     /**
      * GraphAdapter for use with recyclerView.
      */
+
     private class GraphAdapter extends RecyclerView.Adapter<GraphHolder>{
         private List<Graph> graphList;
         GraphAdapter(List<Graph> graphList) {

@@ -1,9 +1,9 @@
 package com.example.ahmed.walkgraph.presentation;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.example.ahmed.walkgraph.App;
@@ -34,6 +34,7 @@ public class ContainerActivity extends AppCompatActivity implements
     /**
      * Inject Fields - Fragments
      */
+
     @Inject
     SplashFragmentImpl splashFragment;
 
@@ -59,6 +60,7 @@ public class ContainerActivity extends AppCompatActivity implements
      *
      * @param savedInstanceState of the activity.
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,7 @@ public class ContainerActivity extends AppCompatActivity implements
     /**
      * GraphList fragment's specific callback, to switch to map.
      */
+
     @Override
     public void switchToMap() {
         manager.beginTransaction()
@@ -124,6 +127,7 @@ public class ContainerActivity extends AppCompatActivity implements
     /**
      * Map fragment's callback.
      */
+
     @Override
     public void returnToList() {
         switchToList();
@@ -135,6 +139,7 @@ public class ContainerActivity extends AppCompatActivity implements
      * @param resultCode of the request's result- OK or NOT.
      * @param data of the request.
      */
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == MapFragmentImpl.permissionCode){

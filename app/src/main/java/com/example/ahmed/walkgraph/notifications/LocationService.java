@@ -111,7 +111,6 @@ public class LocationService extends Service {
     /**
      * Location listeners are removed from manager before the service is destroyed
      */
-
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -137,10 +136,12 @@ public class LocationService extends Service {
                     .getSystemService(Context.LOCATION_SERVICE);
         }
     }
+
     /**
      * @return int START_STICKY to allow the service to be
      * recreated when the process had been killed
      */
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startIds){
         Log.d(TAG, "On start command started");
@@ -174,6 +175,7 @@ public class LocationService extends Service {
             locationList.add(theLocation);
 
             if (locationList.size() == preference.getLocationFreq()){
+            //check if list size is equals to and write to db
                 Graph graph = new Graph();
 
                 int day , month, year;

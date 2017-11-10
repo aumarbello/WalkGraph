@@ -20,6 +20,7 @@ import javax.inject.Inject;
  * PreferenceFragment class to allow user customization.
  */
 
+
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener{
     /**

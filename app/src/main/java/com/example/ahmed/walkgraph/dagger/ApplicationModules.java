@@ -36,7 +36,7 @@ public class ApplicationModules {
 
     @Provides
     @Singleton
-    LocationService providesLocationService(){
+    LocationService providesLocationService() {
         return new LocationService();
     }
 }

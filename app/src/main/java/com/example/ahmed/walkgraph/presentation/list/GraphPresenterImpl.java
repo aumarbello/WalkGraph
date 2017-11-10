@@ -23,6 +23,7 @@ public class GraphPresenterImpl implements GraphPresenter {
     /**
      * Fields.
      */
+
     private GraphListImpl graphList;
     private GraphDAO graphDAO;
     private List<Graph> graphs;
@@ -42,6 +43,7 @@ public class GraphPresenterImpl implements GraphPresenter {
     /**
      * Calls database to get all graphs and updates the recyclerView.
      */
+
     @Override
     public void getGraphList() {
         graphs = graphDAO.getAllGraphs();

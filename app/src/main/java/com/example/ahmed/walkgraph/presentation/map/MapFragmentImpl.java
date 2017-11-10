@@ -138,6 +138,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
      * @param menu to be passed along with menu resource.
      * @param inflater to be used to inflate menu resource.
      */
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
@@ -191,6 +192,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
             Log.d(TAG, "Google map is null");
             return;
         }
+
         Location first = graph.getLocations().get(0);
         Location last = graph.getLocations().get(graph.getLocations().size() - 1);
         LatLng firstPoint = new LatLng(first.getLatitude(), first.getLongitude());
@@ -210,6 +212,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     /**
      * @param graph to use in drawing polyOptions on the graph.
      */
+
     @Override
     public void drawGraph(Graph graph) {
         PolylineOptions graphOptions = new PolylineOptions();
@@ -220,6 +223,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
         }
 
         Polyline graphPolygon = googleMap.addPolyline(graphOptions);
+
         graphPolygon.setGeodesic(true);
         graphPolygon.setColor(Color.BLACK);
     }
@@ -230,6 +234,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
      * @param permissions asked of the user.
      * @param grantedResults of the permission asked.
      */
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantedResults){
@@ -249,6 +254,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
      * if it doesn't fit the current requirement of the app
      * open the settings for user to change them, if the settings are OK, starts the TimeService.
      */
+
     @Override
     public void startLocationService() {
         LocationRequest request = new LocationRequest()
@@ -323,6 +329,7 @@ public class MapFragmentImpl extends SupportMapFragment implements MapFragment {
     /**
      * Opens GPS settings to allow user turn GPS on.
      */
+
     @Override
     public void onGPS() {
         Intent gpsIntent = new Intent(

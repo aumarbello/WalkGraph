@@ -3,6 +3,7 @@
     <string name="splash_bottom_text">Walk Graph, Helping you keep track of your movement</string>
     <string name="walk_graph_logo">Walk Graph Logo</string>
     <string name="no_graphs">No Graphs Recorded Yet</string>
+
     <string name="start_time_title">Set Location Polling Start Time</string>
     <string name="current_start_time">Current Start Time</string>
     <string name="stop_time_title">Set Location Polling Stop Time</string>

@@ -20,6 +20,7 @@ import javax.inject.Inject;
  */
 
 public class SplashFragmentImpl extends Fragment implements SplashFragment{
+
     /**
      * CallBack interFace to be implemented by containing activity.
      */
@@ -33,6 +34,7 @@ public class SplashFragmentImpl extends Fragment implements SplashFragment{
     /**
      * Fields
      */
+
     @Inject
     SplashPresenterImpl splashPresenter;
     private SplashCallback callback;
@@ -79,6 +81,7 @@ public class SplashFragmentImpl extends Fragment implements SplashFragment{
     /**
      * Switches to MapFragment
      */
+
     @Override
     public void openMapFragment() {
         callback.changeToMap();

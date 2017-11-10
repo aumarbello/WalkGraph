@@ -15,6 +15,7 @@ import io.reactivex.Observable;
  */
 
 public class SplashPresenterImpl implements SplashPresenter {
+
     /**
      * Fields
      */
@@ -33,6 +34,7 @@ public class SplashPresenterImpl implements SplashPresenter {
     /**
      * Delays for 3 seconds and changes fragment
      */
+
     @Override
     public void openMapFragment() {
         Observable.create(emitter -> {

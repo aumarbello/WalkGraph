@@ -36,5 +36,6 @@
         android:background="@color/colorPrimary"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"/>
+
 </RelativeLayout>
 

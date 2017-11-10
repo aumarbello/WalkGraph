@@ -21,5 +21,6 @@ public interface MapPresenter {
      * Test graph object when there's no graph in the Database.
      * @return dummy graph.
      */
+
     Graph testGraph();
 }

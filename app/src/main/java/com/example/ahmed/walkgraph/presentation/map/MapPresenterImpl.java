@@ -41,6 +41,7 @@ public class MapPresenterImpl implements MapPresenter {
      * Reads the most recent graph from the database.
      * @return most recent graph if not null else dummy graph object.
      */
+
     @Override
     public Graph getRecentGraph() {
         int day , month, year;
@@ -48,6 +49,7 @@ public class MapPresenterImpl implements MapPresenter {
         Calendar calendar = Calendar.getInstance();
 
         day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+
         month = calendar.get(Calendar.MONTH);
         year = calendar.get(Calendar.YEAR);
 
@@ -63,6 +65,7 @@ public class MapPresenterImpl implements MapPresenter {
      * Generates dummy graph object.
      * @return dummy graph.
      */
+
     @Override
     public Graph testGraph() {
         Graph graph = new Graph();
