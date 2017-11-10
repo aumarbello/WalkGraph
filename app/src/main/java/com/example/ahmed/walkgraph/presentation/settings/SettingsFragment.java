@@ -118,10 +118,10 @@ public class SettingsFragment extends PreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.key_graph_keep))){
             ListPreference preference = (ListPreference) findPreference(key);
-            preference.setSummary(sharedPreferences.getInt(key, 3) + " Days");
+            preference.setSummary(sharedPreferences.getString(key, "3") + " Days");
         }else if (key.equals(getString(R.string.key_polling_interval))){
             ListPreference preference = (ListPreference) findPreference(key);
-            preference.setSummary(sharedPreferences.getInt(key, 15) + " Minutes");
+            preference.setSummary(sharedPreferences.getString(key, "15") + " Minutes");
         }else if (key.equals(getString(R.string.key_start_polling))){
             TimePreference preference = (TimePreference) findPreference(key);
             long prefLong = sharedPreferences.getLong(key,
