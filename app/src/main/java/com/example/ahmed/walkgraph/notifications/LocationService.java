@@ -34,6 +34,7 @@ public class LocationService extends Service {
     private static final int locationDistance = 0;
     private static Location theLocation;
     private static List<Location> locationList = new ArrayList<>();
+    private boolean isAdded;
 
     @Inject
     GraphDAO graphDAO;
@@ -113,7 +114,12 @@ public class LocationService extends Service {
      */
     @Override
     public void onDestroy(){
-        super.onDestroy();
+        if (!isAdded){
+            addGraphToDB();
+
+            Log.d(TAG, "Added graph before destroying service");
+        }
+
 
         Log.d(TAG, "Entered onDestroy");
 
@@ -122,6 +128,24 @@ public class LocationService extends Service {
                 manager.removeUpdates(listener);
             }
         }
+
+        super.onDestroy();
+    }
+
+    public void addGraphToDB() {
+        Graph graph = new Graph();
+
+        int day , month, year;
+
+        Calendar calendar = Calendar.getInstance();
+
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
+        year = calendar.get(Calendar.YEAR);
+
+        graph.setGraphDate(day, month, year);
+        graph.setLocations(locationList);
+        graphDAO.addGraph(graph);
     }
 
     /**
@@ -150,13 +174,6 @@ public class LocationService extends Service {
     }
 
     /**
-     * Show the user notification about the day's location history
-     */
-    public void showNotification() {
-        //todo build notification and send
-    }
-
-    /**
      * Location Listener that receives new location as they become available,
      * add them to a list of locations and when the list reaches
      * the expected number of location updates, adds the list and the graph
@@ -171,24 +188,16 @@ public class LocationService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             LocationService.theLocation = location;
-            Log.d(TAG, "Got a fix" + location);
+            Log.d(TAG, "Got a fix" + location + "Latitude - " + location.getLatitude() + " Longitude - " + location.getLongitude());
             locationList.add(theLocation);
 
             if (locationList.size() == preference.getLocationFreq()){
             //check if list size is equals to and write to db
-                Graph graph = new Graph();
+                isAdded = true;
+                addGraphToDB();
 
-                int day , month, year;
-
-                Calendar calendar = Calendar.getInstance();
-
-                day = calendar.get(Calendar.DAY_OF_MONTH);
-                month = calendar.get(Calendar.MONTH);
-                year = calendar.get(Calendar.YEAR);
-
-                graph.setGraphDate(day, month, year);
-                graph.setLocations(locationList);
-                graphDAO.addGraph(graph);
+                Log.d(TAG, "Added graph when the location frequency reached and destroyed");
+                onDestroy();
             }
         }
 
