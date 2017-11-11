@@ -78,10 +78,18 @@ public class SettingsFragment extends PreferenceFragment
      * Generate String for a time Preference.
      * @param hour of the preference.
      * @param minute of the preference.
-     * @return String representation on based on the parameters passed.
+     * @return String representation based on the parameters passed.
      */
     private String timeString(int hour, int minute){
-        return hour + ":" + minute;
+        String hourString = !isSingle(hour) ? hour + "" : "0" + hour;
+        String minuteString = !isSingle(minute) ? minute + "" : "0" + minute;
+        return hourString + ":" + minuteString;
+    }
+
+    private boolean isSingle(int value){
+        return value == 0 || value == 1 || value == 2
+                || value == 3 || value == 4 || value == 5 || value == 6
+                || value == 7 || value == 8 || value == 9;
     }
 
     /**
