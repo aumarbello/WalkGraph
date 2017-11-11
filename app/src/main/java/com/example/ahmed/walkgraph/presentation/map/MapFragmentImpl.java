@@ -226,7 +226,8 @@ public class MapFragmentImpl extends MapFragment
         Polyline graphPolygon = googleMap.addPolyline(graphOptions);
 
         graphPolygon.setGeodesic(true);
-        graphPolygon.setColor(Color.BLACK);
+        graphPolygon.setColor(Color.DKGRAY);
+        graphPolygon.setWidth(20);
     }
 
     /**
