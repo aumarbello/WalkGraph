@@ -33,8 +33,10 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
@@ -220,7 +222,14 @@ public class MapFragmentImpl extends MapFragment
         List<Location> locationList = graph.getLocations();
 
         for (Location location: locationList){
-            graphOptions.add(new LatLng(location.getLatitude(), location.getLongitude()));
+            LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            MarkerOptions options = new MarkerOptions();
+            options.position(currentPosition)
+                    .icon(BitmapDescriptorFactory.defaultMarker())
+                    .title("Position")
+                    .snippet("Some Position");
+            googleMap.addMarker(options);
+            graphOptions.add(currentPosition);
         }
 
         Polyline graphPolygon = googleMap.addPolyline(graphOptions);
